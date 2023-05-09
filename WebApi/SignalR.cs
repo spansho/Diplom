@@ -12,16 +12,16 @@ namespace ServerSite
 
         public async Task<object> Conect(string message, string groupName)
         {
-            if(_repository.Room.GetRoomByLink(groupName) != null)
+            if (_repository.Room.GetRoomByLink(groupName) != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-                await Clients.Caller.SendAsync(message);
-                await Clients.Others.SendAsync(message);
+                await Clients.Caller.SendAsync("Receive", message);
+                await Clients.Others.SendAsync("Receive", message);
+                await this.Clients.All.SendAsync("Receive", message);
                 return true;
             }
 
             return new {Message="Такой комнаты не существует"};
-            
         }
 
         public async Task Disconeconect(string message, string groupName)

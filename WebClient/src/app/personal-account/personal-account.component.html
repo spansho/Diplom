@@ -1,0 +1,56 @@
+<div class="scope">
+    <p class="section-name">Личный кабинет</p>
+    <div class="grup"> 
+        <div class="nav-block">
+            <button class="btn-group" (click)="setTub('orders')">
+                Все заказы
+            </button>
+            <button class="btn-group" (click)="setTub('personalData')">
+                Личные данные
+            </button>
+            <div class="btn-group rg">
+                <button class="btn-group" routerLink="/" (click)="exit()">
+                    Выйти из аккаунта
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div *ngIf="tub === 'orders'" class="wrapper">
+            <p class="wrapper section-name">Все ваши заказы произведенные за все время:</p>
+            <div class="wrapper-item">
+                Дата: 01.12.2022<br>
+                Количество вещей: 5<br>
+                Общаястоимость: 2550
+            </div>
+            <div class="wrapper-item">
+                Дата: 01.12.2022<br>
+                Количество вещей: 7<br>
+                Общаястоимость: 3250
+            </div>
+            <div class="wrapper-item">
+                Дата: 01.12.2022<br>
+                Количество вещей: 15<br>
+                Общаястоимость: 10100
+            </div>
+        </div>
+        <div *ngIf="tub === 'personalData'" class="wrapper">
+            <p class="wrapper section-name">Ваши личные данные:</p>
+            <p class="wrapper section-name">Имя: Artem</p>
+            <p class="wrapper section-name">e-mail: atr.malyykin@gmail.com</p>
+        </div>
+        <!-- <div *ngIf="tub === 'orders'" class="wrapper">
+            <p class="wrapper section-name">Все ваши заказы произведенные за все время:</p>
+            <div class="wrapper-item" *ngFor="let order of orders">
+                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M17 11a2 2 0 0 1 2-2h2V4h-5.126a4.002 4.002 0 0 1-7.748 0H3v5h2a2 2 0 0 1 2 2v9h10v-9ZM2 11a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h6.5a.5.5 0 0 1 .5.5V3a2 2 0 1 0 4 0v-.5a.5.5 0 0 1 .5-.5H21a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-3v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9H2Z" fill="#faf2ff" fill-rule="evenodd" class="fill-000000"></path></svg>
+                Одежда
+            </div>
+        </div>
+        <div *ngIf="tub === 'personalData'" class="wrapper">
+            <p class="wrapper section-name">Ваши личные данные:</p>
+            <div class="wrapper-item" *ngFor="let order of orders">
+                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M17 11a2 2 0 0 1 2-2h2V4h-5.126a4.002 4.002 0 0 1-7.748 0H3v5h2a2 2 0 0 1 2 2v9h10v-9ZM2 11a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h6.5a.5.5 0 0 1 .5.5V3a2 2 0 1 0 4 0v-.5a.5.5 0 0 1 .5-.5H21a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-3v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9H2Z" fill="#faf2ff" fill-rule="evenodd" class="fill-000000"></path></svg>
+                Одежда
+            </div>
+        </div> -->
+    </div>
+</div>

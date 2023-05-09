@@ -1,0 +1,94 @@
+.btn-group {
+    height: 100%;
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    color: #952CFF !important;
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0;
+    background-color: #FAF2FF;
+    border: none;
+}
+
+.btn-group.rg {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.nav-block {
+    width: 100%;
+    margin: 0;
+    height: 35px;
+    color: #FAF2FF;
+    display: flex;
+}
+
+.scope {
+    width: 100vw;
+    min-height: 87vh;
+    background-color: #FAF2FF;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 36px 68px 36px 68px;
+}
+
+.grup {
+    padding: 10px 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.section-name {
+    font-size: 24px;
+    color: #952CFF;
+}
+
+.wrapper.section-name {
+    font-size: 20px;
+    margin: 0px;
+}
+
+hr {
+    width: 100%;
+    margin: 0;
+    border-top: 1px solid #952CFF;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0px;
+    width: 100%;
+    gap: 10px;
+}
+
+.wrapper-item {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: #952CFF;
+    padding: 10px;
+}
+
+.wrapper-item {
+    color: #FAF2FF;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.wrapper-item:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+svg {
+    width: 225px;
+    margin-right: 32px;
+}

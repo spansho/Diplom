@@ -2,11 +2,12 @@
   "version": "1.0.0",
   "name": "asp.net",
   "private": true,
-  "author": "Eugene Popov <metanit.com>",
+  "author": "",
   "scripts": {
     "ng": "ng",
     "start": "echo hello && ng serve",
-    "build": "ng build"
+    "build": "ng build",
+    "postinstall": "ngcc"
   },
   "dependencies": {
     "@angular/common": "~10.0.0",

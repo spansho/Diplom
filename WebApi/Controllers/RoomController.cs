@@ -25,7 +25,7 @@ namespace ServerSite.Controllers
         }
 
 
-        [HttpPost("create"),Authorize]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateRoom()
         {
             //TODO тут кароче добавить проверку на залогинен пользователь или нет
