@@ -16,7 +16,7 @@ namespace ServerSite
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 await Clients.Caller.SendAsync("Receive", message);
-                await Clients.Others.SendAsync("Receive", message);
+                await Clients.Group(groupName).SendAsync("Receive", message);
                 return new {UserId=Context.ConnectionId,};
             }
             //IOD И СCONECTION ID
