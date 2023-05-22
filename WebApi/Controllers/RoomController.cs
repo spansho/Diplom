@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerSite.DTO;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ServerSite.Controllers
@@ -42,8 +43,10 @@ namespace ServerSite.Controllers
             _repository.Save();
 
             //return Redirect();
+            // ВЕРНУТЬ НАХУЙ МОДЕЛЬ С ВИДЕО ЕБАННОГО
+            List<User> users = new List<User>();    
 
-            return Ok(new {Link= roomLink ,Id=guid});
+            return Ok(new {Link= roomLink ,Id=guid,Users=users});
         }
 
        
