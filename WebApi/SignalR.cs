@@ -14,6 +14,7 @@ namespace ServerSite
         {
             if (_repository.Room.GetRoomByLink(groupName) != null)
             {
+                
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 await Clients.Caller.SendAsync("Receive", message);
                 await Clients.Group(groupName).SendAsync("Receive", message);
