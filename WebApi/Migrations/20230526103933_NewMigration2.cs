@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApi.Migrations
 {
-    public partial class CreateDipmlon : Migration
+    public partial class NewMigration2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace WebApi.Migrations
                 name: "Room",
                 columns: table => new
                 {
-                    RoomId = table.Column<Guid>(nullable: false),
+                    RoomId = table.Column<string>(nullable: false),
                     NumberOfVisitorsIn = table.Column<int>(nullable: false),
                     LinkToRoom = table.Column<string>(nullable: true)
                 },

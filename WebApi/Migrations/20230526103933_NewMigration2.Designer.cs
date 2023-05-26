@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230502071109_CreateDipmlon")]
-    partial class CreateDipmlon
+    [Migration("20230526103933_NewMigration2")]
+    partial class NewMigration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,10 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.Room", b =>
                 {
-                    b.Property<Guid>("RoomId")
+                    b.Property<string>("RoomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("RoomId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LinkToRoom")
                         .HasColumnType("nvarchar(max)");

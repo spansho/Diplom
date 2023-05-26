@@ -35,7 +35,7 @@ namespace ServerSite.Controllers
             Room room = new Room
             {
                 NumberOfVisitorsIn = 1,
-                RoomId = Guid.NewGuid(),
+                RoomId = Guid.NewGuid().ToString(),
                 LinkToRoom = roomLink
             };
 

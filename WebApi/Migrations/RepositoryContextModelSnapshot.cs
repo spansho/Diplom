@@ -21,10 +21,10 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.Room", b =>
                 {
-                    b.Property<Guid>("RoomId")
+                    b.Property<string>("RoomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("RoomId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LinkToRoom")
                         .HasColumnType("nvarchar(max)");

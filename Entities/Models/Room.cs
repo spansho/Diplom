@@ -9,7 +9,7 @@ namespace Entities.Models
     {
         [Column("RoomId")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid RoomId { get; set; }
+        public String RoomId { get; set; }
 
         public int NumberOfVisitorsIn { get; set; }
 

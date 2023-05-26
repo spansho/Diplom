@@ -63,7 +63,7 @@ namespace ServerUnitTest
         {
             RoomRepositoryStub stub = new RoomRepositoryStub();
             Guid newGuid = Guid.NewGuid();
-            Room room = new Room { RoomId = newGuid, NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
+            Room room = new Room { RoomId = newGuid.ToString(), NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
             stub.CreateRoom(room);
 
             var znachenie = stub.GetRoomById(newGuid.ToString());
@@ -76,7 +76,7 @@ namespace ServerUnitTest
         {
             RoomRepositoryStub stub = new RoomRepositoryStub();
             Guid newGuid = Guid.NewGuid();
-            Room room = new Room { RoomId = newGuid, NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
+            Room room = new Room { RoomId = newGuid.ToString(), NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
             stub.CreateRoom(room);
 
             var znachenie = stub.GetRoomById(newGuid.ToString());
@@ -89,12 +89,12 @@ namespace ServerUnitTest
         {
             RoomRepositoryStub stub = new RoomRepositoryStub();
             Guid newGuid = Guid.NewGuid();
-            Room room = new Room { RoomId = newGuid, NumberOfVisitorsIn = 1, LinkToRoom = "best"+newGuid.ToString() };
+            Room room = new Room { RoomId = newGuid.ToString(), NumberOfVisitorsIn = 1, LinkToRoom = "best"+newGuid.ToString() };
             stub.CreateRoom(room);
 
-            var znachenie = stub.GetRoomById(newGuid.ToString());
+            var znachenie = stub.GetRoomById(newGuid.ToString());   
 
-            Assert.That(znachenie.RoomId, Is.EqualTo(newGuid));
+            Assert.That(znachenie.RoomId, Is.EqualTo(newGuid.ToString()));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace ServerUnitTest
         {
             RoomRepositoryStub stub = new RoomRepositoryStub();
             Guid newGuid = Guid.NewGuid();
-            Room room = new Room { RoomId = newGuid, NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
+            Room room = new Room { RoomId = newGuid.ToString(), NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
             stub.CreateRoom(room);
 
             var znachenie = stub.GetRoomByLink(room.LinkToRoom);
