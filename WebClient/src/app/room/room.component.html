@@ -1,0 +1,78 @@
+<div class="room-page">
+    <div class="header">
+        <div class="project-name-container" (click)="openHome()">
+            <svg class="project-name-icom" width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.9663 31.8069L27.7913 35.7194L40.1988 9.59812L22.225 0.278748L19.8206 5.08625L17.7813 0.900623L-0.193115 10.22L11.5694 35.7056L19.9663 31.8069ZM22.775 1.97125L38.5513 10.1519L27.2088 34.0306L10.8388 25.8456L22.775 1.97125ZM17.2188 2.59937L19.1163 6.49437L9.16126 26.4044L18.5375 31.0925L12.18 34.0444L1.44313 10.78L17.2188 2.59937Z" fill="#8E8D8A"/>
+                <path d="M24.3084 3.90403L23.1904 3.34503L22.5655 4.59496L23.6835 5.15396L24.3084 3.90403Z" fill="#8E8D8A"/>
+                <path d="M3.19071 11.4049L3.81567 12.6548L4.93367 12.0958L4.30871 10.8459L3.19071 11.4049Z" fill="#8E8D8A"/>
+                <path d="M25.6913 32.0967L26.8093 32.6557L27.4342 31.4058L26.3162 30.8468L25.6913 32.0967Z" fill="#8E8D8A"/>
+                <path d="M21.965 23.3225L22.1419 23.6162L22.6819 23.6275C24.3838 23.6275 30.0707 23.3781 31.8 20.1725C32.7538 18.4037 32.6894 15.9044 30.9219 14.9512C29.8282 14.3606 28.2494 14.2225 27.1775 14.6106C27.1538 14.3419 27.0963 14.0744 27.0057 13.8106C26.7132 12.9669 26.1069 12.2625 25.2975 11.8262C24.7919 11.5531 24.1975 11.4094 23.5769 11.4094C22.1032 11.4094 20.6963 12.1806 20.0757 13.3294C18.1482 16.9012 21.8082 23.0619 21.965 23.3225ZM21.175 13.9225C21.5707 13.19 22.58 12.6587 23.5763 12.6587C23.99 12.6587 24.38 12.7506 24.7038 12.9256C25.2369 13.2131 25.6344 13.6725 25.8238 14.2187C26.0119 14.7606 25.9675 15.3325 25.7007 15.8287L26.8007 16.4219C27.1857 15.7081 28.1744 15.6312 28.5825 15.6312C29.1982 15.6312 29.8357 15.7837 30.3294 16.05C31.4632 16.6619 31.2694 18.525 30.7013 19.5787C29.3219 22.1319 24.0494 22.3575 22.8594 22.375C21.83 20.5462 19.9288 16.2331 21.175 13.9225Z" fill="#8E8D8A"/>
+            </svg>                
+            <span class="project-name-titel">
+                Planning Poker Room
+            </span>
+        </div>
+        <button class="invite-players" disabled="true">
+            Invite players
+        </button>
+        <button class="leave-the-room" disabled="true">
+            Leave the room
+        </button>
+    </div>
+    <div class="body">
+        <a *ngIf="false" class="invite-players-link" href="">Invite players</a>
+        <div class="card card-2">
+            <div class="card-body"></div>
+            <span class="card-name">Name</span>
+        </div>
+        <div class="table-wrapper">
+            <div class="left">
+                <div class="card card-5">
+                    <div class="card-body"></div>
+                    <span class="card-name">Name</span>
+                </div>
+                <div class="card card-3">
+                    <div class="card-body"></div>
+                    <span class="card-name">Name</span>
+                </div>
+                <div class="card card-7">
+                    <div class="card-body"></div>
+                    <span class="card-name">Name</span>
+                </div>
+            </div>
+            <div class="table">
+                <span>Choose your cards!</span>
+            </div>
+            <div class="right">
+                <div class="card card-8">
+                    <div class="card-body"></div>
+                    <span class="card-name">Name</span>
+                </div>
+                <div class="card card-4">
+                    <div class="card-body"></div>
+                    <span class="card-name">Name</span>
+                </div>
+                <div class="card card-6">
+                    <div class="card-body"></div>
+                    <span class="card-name">Name</span>
+                </div>
+            </div>
+        </div>
+        <div class="card card-1">
+            <div class="card-body"></div>
+            <span class="card-name">Name</span>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="choose-estimate">
+            <span class="choose-estimate-span">Choose your estimate 👇</span>
+            <ul class="estimates">
+                <li *ngFor="let estimate of estimates" class="estimate">
+                    <button class="estimate-btn">
+                        <span>{{estimate}}</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
