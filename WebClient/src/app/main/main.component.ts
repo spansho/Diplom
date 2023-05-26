@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SignalRService } from '../services/signalr.service';
 
 @Component({
   selector: 'main',
@@ -6,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly signalRService: SignalRService
+  ) { }
 
   ngOnInit(): void {
+    if (!this.signalRService.isConected) {
+      this.signalRService.startConnection();
+    }
   }
 
 }

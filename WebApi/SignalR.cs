@@ -18,7 +18,7 @@ namespace ServerSite
 
         public async Task<object> Conect(string message, string groupName)
         {
-            if (_repository.Room.GetRoomByLink(groupName) != null)
+            if (_repository.Room.GetRoomById(groupName) != null)
             {
                 if(roomVisitors.ContainsKey(groupName))
                 {
