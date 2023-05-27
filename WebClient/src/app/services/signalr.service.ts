@@ -22,6 +22,10 @@ export class SignalRService {
   };
   public enterRoom = (roomId: string) => {
     this.hubConnection.invoke("Conect", "Подключение к комнате", roomId) // отправка данных серверу
+      .then((data: any) => {
+        console.log("OK");
+        console.log(data);
+      })
       .catch(function (err) {
           return console.error(err.toString());
       });

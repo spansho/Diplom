@@ -55,6 +55,14 @@
     background: #EAE7DC;
     border: 2px solid #E85A4F;
     border-radius: 4px;
+    -webkit-transition: .4s ease-out;
+    -webkit-transition-delay: 0.1s;
+    -o-transition: .1s ease-out;
+    -o-transition-delay: 0.1s;
+    -moz-transition: .1s ease-out;
+    -moz-transition-delay: 0.1s;
+     transition: .1s ease-out;
+     transition-delay: 0.1s;
 }
 
 .invite-players-link {
@@ -88,6 +96,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+.card .card-body.selected{
+    background-color: #E85A4F;
 }
 
 .card-body {
@@ -170,6 +182,23 @@ button {
     flex-direction: column;
 }
 
+.estimates:hover .estimate button:hover {
+    background-color: #E85A4F;
+    margin-top: -8px;
+    -webkit-transition: .4s ease-out;
+    -webkit-transition-delay: 0.1s;
+    -o-transition: .1s ease-out;
+    -o-transition-delay: 0.1s;
+    -moz-transition: .1s ease-out;
+    -moz-transition-delay: 0.1s;
+     transition: .1s ease-out;
+     transition-delay: 0.1s;
+}
+
+.card-1 {
+    margin-top: 45px;
+}
+
 .card-2 {
     margin-bottom: 20px;
 }
@@ -196,4 +225,12 @@ button {
 
 .card-8 {
     margin-bottom: 25px;
+}
+
+.table-wrapper .left {
+    width: 88px;
+}
+
+.table-wrapper .right {
+    width: 88px;
 }

@@ -12,31 +12,31 @@
                 Planning Poker Room
             </span>
         </div>
-        <button class="invite-players" disabled="true">
+        <button class="invite-players" [disabled]="!signalRService.isConected">
             Invite players
         </button>
-        <button class="leave-the-room" disabled="true">
+        <button class="leave-the-room" [disabled]="!signalRService.isConected">
             Leave the room
         </button>
     </div>
     <div class="body">
         <a *ngIf="false" class="invite-players-link" href="">Invite players</a>
-        <div class="card card-2">
-            <div class="card-body"></div>
+        <div class="card card-2" *ngIf="users.length > 1">
+            <div class="card-body" [class.selected]="users[1].estimation"></div>
             <span class="card-name">Name</span>
         </div>
         <div class="table-wrapper">
             <div class="left">
-                <div class="card card-5">
-                    <div class="card-body"></div>
+                <div class="card card-5" *ngIf="users.length > 4">
+                    <div class="card-body" [class.selected]="users[4].estimation"></div>
                     <span class="card-name">Name</span>
                 </div>
-                <div class="card card-3">
-                    <div class="card-body"></div>
+                <div class="card card-3" *ngIf="users.length > 2">
+                    <div class="card-body" [class.selected]="users[2].estimation"></div>
                     <span class="card-name">Name</span>
                 </div>
-                <div class="card card-7">
-                    <div class="card-body"></div>
+                <div class="card card-7" *ngIf="users.length > 6">
+                    <div class="card-body" [class.selected]="users[6].estimation"></div>
                     <span class="card-name">Name</span>
                 </div>
             </div>
@@ -44,22 +44,22 @@
                 <span>Choose your cards!</span>
             </div>
             <div class="right">
-                <div class="card card-8">
-                    <div class="card-body"></div>
+                <div class="card card-8" *ngIf="users.length > 7">
+                    <div class="card-body" [class.selected]="users[7].estimation"></div>
                     <span class="card-name">Name</span>
                 </div>
-                <div class="card card-4">
-                    <div class="card-body"></div>
+                <div class="card card-4" *ngIf="users.length > 3">
+                    <div class="card-body" [class.selected]="users[3].estimation"></div>
                     <span class="card-name">Name</span>
                 </div>
-                <div class="card card-6">
-                    <div class="card-body"></div>
+                <div class="card card-6" *ngIf="users.length > 5">
+                    <div class="card-body" [class.selected]="users[5].estimation"></div>
                     <span class="card-name">Name</span>
                 </div>
             </div>
         </div>
-        <div class="card card-1">
-            <div class="card-body"></div>
+        <div class="card card-1" *ngIf="users.length > 0">
+            <div class="card-body" [class.selected]="users[0].estimation"></div>
             <span class="card-name">Name</span>
         </div>
     </div>
