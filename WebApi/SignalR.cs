@@ -32,7 +32,7 @@ namespace ServerSite
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 await Clients.Caller.SendAsync("Receive", message);
                 await Clients.Group(groupName).SendAsync("Receive", message);
-                return new { UserId = Context.ConnectionId, AnotherVisitors = roomVisitors[groupName]};
+                return new { UserId = Context.ConnectionId,Grade=string.Empty,Post="hzKto", AnotherVisitors = roomVisitors[groupName]};
             }
             //IOD И СCONECTION ID
             return new {Message="Такой комнаты не существует"};
