@@ -23,8 +23,7 @@ namespace WebApi.Extensions
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
         public static void ConfigureIISIntegration(this IServiceCollection services) =>
             services.Configure<IISOptions>(options =>
