@@ -22,7 +22,7 @@ namespace WebApi.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
-                builder.AllowAnyOrigin()
+                builder.AllowAnyOrigin().WithOrigins("http://localhost:5000")
                 .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
         public static void ConfigureIISIntegration(this IServiceCollection services) =>

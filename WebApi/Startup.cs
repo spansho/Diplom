@@ -63,6 +63,10 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x=>x.SetIsOriginAllowed((host)=>true)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials());
             app.UseStaticFiles();
 
             if (!env.IsDevelopment())
