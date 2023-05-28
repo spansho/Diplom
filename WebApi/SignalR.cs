@@ -47,6 +47,7 @@ namespace ServerSite
             //roomVisitors[groupName].Remove(roomVisitors[groupName].FirstOrDefault(x=>x.UserId==Context.ConnectionId.ToString()));
             //TODO ТУТ ВОЗВРАТ ПОД ВОПРОСОМ
             await Clients.Others.SendAsync(message);
+            _repository.Save();
         }
 
         public async Task Voting(EstimateFromUser message, string groupName)
