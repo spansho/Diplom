@@ -60,7 +60,7 @@ namespace ServerSite
         {
             //
             await Clients.Group(groupName).SendAsync("Recieve",message);
-            return new User {UserId=message.Id, Grade=message.Grade,isObserver=false,Visitors= roomVisitors[groupName]};    
+            return new UserFromServer {UserId=message.Id, Grade=message.Grade,isObserver=false,Visitors= roomVisitors[groupName]};    
         }
 
 
