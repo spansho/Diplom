@@ -57,7 +57,7 @@ namespace ServerSite
             await Clients.Others.SendAsync(message);
         }
 
-        public async Task<List<Voter>> Voting(GradeFromUser message, string groupName)
+        public async Task Voting(GradeFromUser message, string groupName)
         {
             //
             await Clients.Group(groupName).SendAsync("Recieve", roomVisitors[groupName]);
