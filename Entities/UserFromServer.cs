@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Entities
 {
-    public class Room
+    public class UserFromServer
     {
         public string UserId;
         public string  Grade;
