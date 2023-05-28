@@ -37,7 +37,7 @@ namespace ServerSite
         {
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
-            var room =_repository.Room.GetRoomById(message);
+            var room =_repository.Room.GetRoomById(groupName);
             room.NumberOfVisitorsIn--;
             if(room.NumberOfVisitorsIn == 0)
             {
@@ -50,11 +50,11 @@ namespace ServerSite
             _repository.Save();
         }
 
-        public async Task Voting(EstimateFromUser message, string groupName)
+        public async Task Voting(string estimate, string userId, string groupName)
         {
 
-            var roomUser = _repository.RoomUser.GetRoomUserById(message.Id);
-            roomUser.Estimate = message.Estimate;
+            var roomUser = _repository.RoomUser.GetRoomUserById(userId);
+            roomUser.Estimate = estimate;
             _repository.Save();
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false,groupName));
         }
