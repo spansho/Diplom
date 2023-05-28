@@ -1,6 +1,8 @@
 ﻿using Contracts;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -54,10 +56,11 @@ namespace ServerSite
             await Clients.Others.SendAsync(message);
         }
 
-        public async Task Voting(string message, string groupName)
+        public async Task<Object> Voting(GradeFromUser message, string groupName)
         {
             //
             await Clients.Group(groupName).SendAsync("Recieve",message);
+            return new User {UserId=message.Id, Grade=message.Grade,isObserver=false,Visitors= roomVisitors[groupName]};    
         }
 
 
