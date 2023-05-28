@@ -19,21 +19,19 @@ namespace ServerSite
             _repository = repository; 
         }
 
-        public async Task<object> Conect(string name, string groupName)
+        public async Task Conect(string name, string groupName)
         {
-            if (_repository.Room.GetRoomById(groupName) != null)
+            if (_repository.Room.GetRoomById(groupName) is null)
             {
-               
-                    
-                 RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name, Estimate = string.Empty, isObserver = false, RoomId = groupName };
-                _repository.RoomUser.CreateRoomUser(roomUser);
-                _repository.Save();
-                await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-                await Clients.Caller.SendAsync("Receive", name);
-                await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false,groupName) });// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
+                await Clients.Caller.SendAsync("Receive", "Такой комнаты не существует");
             }
-            //IOD И СCONECTION ID
-            return new {Message="Такой комнаты не существует"};
+
+            RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name, Estimate = string.Empty, isObserver = false, RoomId = groupName };
+            _repository.RoomUser.CreateRoomUser(roomUser);
+            _repository.Save();
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            await Clients.Caller.SendAsync("Receive", name);
+            await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, groupName) });
         }
 
         public async Task Disconeconect(string message, string groupName)
