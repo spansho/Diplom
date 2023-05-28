@@ -29,7 +29,6 @@ namespace ServerSite
                 _repository.RoomUser.CreateRoomUser(roomUser);
                 _repository.Save();
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-                await Clients.Caller.SendAsync("Receive", name);
                 await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false,groupName) });// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
             }
             //IOD И СCONECTION ID
