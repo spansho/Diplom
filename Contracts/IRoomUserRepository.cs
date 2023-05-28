@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Contracts
 {
-    public interface IRoomUser
+    public interface IRoomUserRepository
     {
         void CreateRoomUser(RoomUser roomUser);
 

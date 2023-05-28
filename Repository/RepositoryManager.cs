@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Repository
         private RepositoryContext _repositoryContext;
         private IUserRepository _userRepository;
         private IRoomRepository _roomRepository;
-        private IRoomUser _roomUserRepository;
+        private IRoomUserRepository _roomUserRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -41,12 +42,12 @@ namespace Repository
             }
         }
 
-        public IRoomUser RoomUser
+        public IRoomUserRepository RoomUser
         {
             get
             {
-                if (_userRepository == null)
-                    _userRepository = new UserRepository(_repositoryContext);
+                if (_roomRepository == null)
+                    _roomRepository = new RoomUserRepository(_repositoryContext);
 
                 return _roomUserRepository;
             }

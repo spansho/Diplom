@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Repository
 {
-    public class RoomUserRepository : RepositoryBase<RoomUser>, IRoomUser
+    public class RoomUserRepository : RepositoryBase<RoomUser>, IRoomUserRepository
     {
         public RoomUserRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
