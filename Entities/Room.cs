@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    public class RoomAngular
+    public class Room
     {
         public string UserId;
         public string  Grade;
