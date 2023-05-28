@@ -37,7 +37,7 @@ namespace ServerSite
         {
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
-            var room =_repository.Room.GetRoomByLink(message);
+            var room =_repository.Room.GetRoomById(message);
             room.NumberOfVisitorsIn--;
             if(room.NumberOfVisitorsIn == 0)
             {
