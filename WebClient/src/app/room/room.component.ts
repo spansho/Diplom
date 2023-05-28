@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SignalRService } from '../services/signalr.service';
 import { State } from '../state';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from "rxjs";
+import { UserEstimate } from '../models/user-estimate.model';
 
 @Component({
   selector: 'room',
@@ -11,26 +14,87 @@ import { Clipboard } from '@angular/cdk/clipboard';
 export class RoomComponent implements OnInit {
   public isInvitePlayersPopUpOpen = false;
   public isNamePopUpOpen = false;
+  public didEveryoneVote = false;
   public readonly estimates = ["0", "0,5", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
-  public users: UserModal[] = [{id: "1", name: "1", estimation: null, observer: false},
-  {id: "2", name: "2", estimation: 4, observer: false},
-  {id: "3", name: "3", estimation: null, observer: false}];
+
+  private readonly unsubscribe$ = new Subject<void>();
+
+  public roomId: string;
+  public roomName = "";
+  public link = window.location.href;
+  public roomModel: any;
+  public averageEstimate = null;
+  public selectedEstimate = "";
 
   constructor(
     public readonly signalRService: SignalRService,
+    protected readonly activeRoute: ActivatedRoute,
     private readonly clipboard: Clipboard
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.activeRoute.params
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(async routeParams => {
+          this.roomId = routeParams.roomId;
+      });
     if (!this.signalRService.isConected) {
        await this.signalRService.startConnection();
     }
-    const roomModel = this.signalRService.enterRoom(State.roomId);
-    console.log(roomModel);
-    console.log(State.roomId);
-    this.signalRService.hubConnection.on("Receive", (message) => {
-      alert(message);
+
+    this.openNamePopUp();
+    this.signalRService.enterRoom$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(message => {
+        console.log("enterRoom$");
+        this.roomModel = message;
+      });
+
+    this.signalRService.sendEstimate$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(message => {
+        console.log("sendEstimate$");
+        this.roomModel.visitors = message;
+        this.didEveryoneVote = true;
+        this.roomModel.visitors.forEach(visitor => {
+          if (visitor.estimate === '') {
+            this.didEveryoneVote = false;
+          }
+        });
     });
+
+    this.signalRService.startNewVoting$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(message => {
+        console.log("startNewVoting$");
+        this.roomModel.visitors = message;
+        this.didEveryoneVote = true;
+        this.roomModel.visitors.forEach(visitor => {
+          if (visitor.estimate === '') {
+            this.didEveryoneVote = false;
+          }
+        });
+        this.averageEstimate = null;
+        this.selectedEstimate = "";
+    });
+
+    this.signalRService.revealCards$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        console.log("revealCards$");
+        let sumEstimates = 0;
+        this.roomModel.visitors.forEach(visitor => {
+          sumEstimates += Number(visitor.estimate);
+        });
+    
+        this.averageEstimate = sumEstimates / this.roomModel.visitors.length;
+        this.averageEstimate = this.averageEstimate.toFixed(2);
+    });
+    // не адекватный костыль на предзащиту, на защите не прокатит 
+    window.onfocus = () => {
+    };
+    window.onmousemove = () => {
+    };
   }
 
   public openHome(): void {
@@ -50,12 +114,37 @@ export class RoomComponent implements OnInit {
     this.clipboard.copy(linkText);
   }
   
-  public closeNamePopUp(): void {
+  public async closeNamePopUp(): Promise<void> {
     this.isNamePopUpOpen = false;
+    await this.signalRService.enterRoom(this.roomId, this.roomName);
   }
 
   public openNamePopUp(): void {
     this.isNamePopUpOpen = true;
+  }
+
+  public async estimateSelected(estimate: string): Promise<void> {
+    if (this.selectedEstimate === estimate) {
+      estimate = this.selectedEstimate = "";
+    } else {
+      this.selectedEstimate = estimate;
+    }
+
+    const userEstimate = new UserEstimate(estimate, this.roomModel.userId);
+    await this.signalRService.sendEstimate(userEstimate, this.roomId);
+  }
+
+  public async leaveRoom(): Promise<void> {
+    await this.signalRService.disconeconectRoom(this.roomId, this.roomName);
+    this.openHome();
+  }
+
+  public async revealCards(): Promise<void> {
+    await this.signalRService.revealCards(this.roomId);
+  }
+
+  public async startNewVoting(): Promise<void> {
+    await this.signalRService.startNewVoting(this.roomId);
   }
 
 }

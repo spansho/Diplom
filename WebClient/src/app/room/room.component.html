@@ -15,52 +15,77 @@
         <button class="invite-players" [disabled]="!signalRService.isConected" (click)="openInvitePlayersPopUp()">
             Invite players
         </button>
-        <button class="leave-the-room" [disabled]="!signalRService.isConected" (click)="openNamePopUp()">
+        <button class="leave-the-room" [disabled]="!signalRService.isConected" (click)="leaveRoom()">
             Leave the room
         </button>
     </div>
     <div class="body">
         <a *ngIf="false" class="invite-players-link" href="">Invite players</a>
-        <div class="card card-2" *ngIf="users.length > 1">
-            <div class="card-body" [class.selected]="users[1].estimation"></div>
-            <span class="card-name">Name</span>
+        <div class="card card-2" *ngIf="roomModel?.visitors?.length > 1">
+            <div class="card-body" [class.selected]="roomModel?.visitors[1]?.estimate !== ''">
+                <span *ngIf="averageEstimate">{{ roomModel?.visitors[1]?.estimate }}</span>
+            </div>
+            <span class="card-name">{{ roomModel?.visitors[1]?.name }}</span>
         </div>
         <div class="table-wrapper">
             <div class="left">
-                <div class="card card-5" *ngIf="users.length > 4">
-                    <div class="card-body" [class.selected]="users[4].estimation"></div>
-                    <span class="card-name">Name</span>
+                <div class="card card-5" *ngIf="roomModel?.visitors?.length > 4">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[4]?.estimate !== ''">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[4]?.estimate }}</span>
+                    </div>
+                    <span class="card-name">{{ roomModel?.visitors[4]?.name }}</span>
                 </div>
-                <div class="card card-3" *ngIf="users.length > 2">
-                    <div class="card-body" [class.selected]="users[2].estimation"></div>
-                    <span class="card-name">Name</span>
+                <div class="card card-3" *ngIf="roomModel?.visitors?.length > 2">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[2]?.estimate !== ''">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[2]?.estimate }}</span>
+                    </div>
+                    <span class="card-name">{{ roomModel?.visitors[2]?.name }}</span>
                 </div>
-                <div class="card card-7" *ngIf="users.length > 6">
-                    <div class="card-body" [class.selected]="users[6].estimation"></div>
-                    <span class="card-name">Name</span>
+                <div class="card card-7" *ngIf="roomModel?.visitors?.length > 6">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[6]?.estimate !== ''">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[6]?.estimate }}</span>
+                    </div>
+                    <span class="card-name">{{ roomModel?.visitors[6]?.name }}</span>
                 </div>
             </div>
-            <div class="table">
-                <span>Choose your cards!</span>
+            <div class="table" [class.reveal]="didEveryoneVote">
+                <span *ngIf="!didEveryoneVote && !averageEstimate">Choose your cards!</span>
+                <button *ngIf="didEveryoneVote && !averageEstimate" class="reveal-cards" (click)="revealCards()">
+                    Reveal cards
+                </button>
+                <div *ngIf="averageEstimate" class="flex-d">
+                    <button class="reveal-cards" (click)="startNewVoting()">
+                        Start new voting
+                    </button>
+                    <span class="inline-b">Average: {{ averageEstimate }}</span>
+                </div>
             </div>
             <div class="right">
-                <div class="card card-8" *ngIf="users.length > 7">
-                    <div class="card-body" [class.selected]="users[7].estimation"></div>
-                    <span class="card-name">Name</span>
+                <div class="card card-8" *ngIf="roomModel?.visitors?.length > 7">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[7]?.estimate !== ''">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[7]?.estimate }}</span>
+                    </div>
+                    <span class="card-name">{{ roomModel?.visitors[7]?.name }}</span>
                 </div>
-                <div class="card card-4" *ngIf="users.length > 3">
-                    <div class="card-body" [class.selected]="users[3].estimation"></div>
-                    <span class="card-name">Name</span>
+                <div class="card card-4" *ngIf="roomModel?.visitors?.length > 3">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[3]?.estimate !== ''">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[3]?.estimate }}</span>
+                    </div>
+                    <span class="card-name">{{ roomModel?.visitors[3]?.name }}</span>
                 </div>
-                <div class="card card-6" *ngIf="users.length > 5">
-                    <div class="card-body" [class.selected]="users[5].estimation"></div>
-                    <span class="card-name">Name</span>
+                <div class="card card-6" *ngIf="roomModel?.visitors?.length > 5">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[5]?.estimate !== ''">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[5]?.estimate }}</span>
+                    </div>
+                    <span class="card-name">{{ roomModel?.visitors[5]?.name }}</span>
                 </div>
             </div>
         </div>
-        <div class="card card-1" *ngIf="users.length > 0">
-            <div class="card-body" [class.selected]="users[0].estimation"></div>
-            <span class="card-name">Name</span>
+        <div class="card card-1" *ngIf="roomModel?.visitors?.length > 0">
+            <div class="card-body" [class.selected]="roomModel?.visitors[0]?.estimate !== ''">
+                <span *ngIf="averageEstimate">{{ roomModel?.visitors[0]?.estimate }}</span>
+            </div>
+            <span class="card-name">{{ roomModel?.visitors[0]?.name }}</span>
         </div>
     </div>
     <div class="footer">
@@ -68,7 +93,7 @@
             <span class="choose-estimate-span">Choose your estimate 👇</span>
             <ul class="estimates">
                 <li *ngFor="let estimate of estimates" class="estimate">
-                    <button class="estimate-btn">
+                    <button class="estimate-btn" [class.selected]="selectedEstimate === estimate" (click)="estimateSelected(estimate)">
                         <span>{{estimate}}</span>
                     </button>
                 </li>
@@ -76,6 +101,7 @@
         </div>
     </div>
 </div>
+
 <div *ngIf="isInvitePlayersPopUpOpen" class="reg-confirm">
     <div class="reg-pop-up">
         <div class="pop-up-header">
@@ -88,8 +114,7 @@
         <p class="section-name pop-up-text">Invite players</p>
         <div class="link-wrapper">
             <a id="link-to-copy" class="link" [attr.title]="">
-                <!-- {{ postPageUrl }} -->
-                http://planningpokeronline.com/ODaYLuw4kol8oloxR0jo
+                {{ link }}
             </a>
         </div>
         <div class="pop-up-footer">
@@ -103,11 +128,9 @@
 <div *ngIf="isNamePopUpOpen" class="reg-confirm">
     <div class="reg-pop-up">
         <p class="section-name pop-up-text">Choose your display name</p>
-        <input type="text" name="room-num" id="room-num" placeholder="Your display name">
+        <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
         <div class="pop-up-footer">
-            <button class="btn pop-up-btn"
-                (click)="closeNamePopUp()"
-            >
+            <button class="btn pop-up-btn" (click)="closeNamePopUp()" [disabled]="roomName === ''">
                 Continue to game
             </button>
         </div>

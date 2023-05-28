@@ -23,7 +23,7 @@
         <span class="description">
             The first person to create a room is the moderator. Share the URL or room number with other team members to join the room.
         </span>
-        <button id="create-new-room">
+        <button id="create-new-room" (click)="createNewRoom()">
             Create new room
         </button>
         <span class="or">
@@ -34,9 +34,9 @@
                 <label for="room-num">
                     Enter The Room Number
                 </label>
-                <input type="text" name="room-num" id="room-num" placeholder="room number">
+                <input type="text" name="room-num" id="room-num" placeholder="Room Number" value="{{ roomId }}" [(ngModel)]="roomId">
             </div>
-            <button id="enter-room">
+            <button id="enter-room" (click)="enterRoomById()">
                 Enter the room
             </button>
         </div>

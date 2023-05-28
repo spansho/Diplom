@@ -11,9 +11,14 @@ import { ApiClient } from './services/api.client';
 import { HttpClientModule } from '@angular/common/http';
 import { RoomComponent } from './room/room.component';
 
-const appRoutes: Routes =[
+const appRoutes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'room', component: RoomComponent },
+    { path: 'room', children: [
+        {
+            path: ":roomId",
+            component: RoomComponent
+        }
+    ] },
     { path: '**', component: NotFoundComponent }
 ];
 

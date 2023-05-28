@@ -32,12 +32,13 @@ namespace ServerSite
             _repository.RoomUser.CreateRoomUser(roomUser);
             _repository.Save();
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, groupName) });
+            await Clients.Caller.SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, groupName) });
+            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
         }
 
         public async Task Disconeconect(string message, string groupName)
         {
-
+            _repository.RoomUser.DeleteRoomUser(Context.ConnectionId);
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
             var room =_repository.Room.GetRoomById(groupName);
             room.NumberOfVisitorsIn--;
@@ -46,10 +47,9 @@ namespace ServerSite
                 _repository.Room.DeleteRoom(room.RoomId.ToString());
                 _repository.Save();
             }
-            //roomVisitors[groupName].Remove(roomVisitors[groupName].FirstOrDefault(x=>x.UserId==Context.ConnectionId.ToString()));
-            //TODO ТУТ ВОЗВРАТ ПОД ВОПРОСОМ
-            await Clients.Others.SendAsync(message);
+
             _repository.Save();
+            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
         }
 
         public async Task Voting(string estimate, string userId, string groupName)
@@ -63,13 +63,18 @@ namespace ServerSite
 
         public async Task StartNewVoting(string groupName)
         {
-            var allUsers = _repository.RoomUser.GetAllRoomUsers(false,groupName);
+            var allUsers = _repository.RoomUser.GetAllRoomUsers(true, groupName);
             foreach(var user in allUsers)
             {
                 user.Estimate = string.Empty;
             }
             await Clients.Group(groupName).SendAsync("StartNewVoting", allUsers);
             _repository.Save();
+        }
+
+        public async Task RevealCards(string groupName)
+        {
+            await Clients.Group(groupName).SendAsync("RevealCards");
         }
 
 

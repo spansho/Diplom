@@ -8,6 +8,7 @@ import { State } from '../state';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  public roomId = "";
   constructor(
     private readonly apiClient: ApiClient
   ) {
@@ -17,17 +18,18 @@ export class HomeComponent implements OnInit {
     
   }
 
-  public enterRoom(): void {
-    window.location.href="/room";
+  public enterRoomById(): void {
+    if (this.roomId.length !== 36) {
+      alert("The entered room id is not valid");
+    } else {
+      window.location.href=`/room/${this.roomId}`;
+    }
   }
 
   public createNewRoom(): void {
     this.apiClient.post("Room/create", {}).then((data: any) => {
-      State.roomId = data.id;
-      State.roomLink = data.link;
-      
+      window.location.href=`/room/${data.id}`;
     });
-    // window.location.href="/room";
   }
 
 }
