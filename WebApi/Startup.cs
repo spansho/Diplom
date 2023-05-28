@@ -105,7 +105,7 @@ namespace WebApi
             public MappingProfile()
             {
                 CreateMap<UserDto, User>();
-                CreateMap<RoomDto, Room>();
+                CreateMap<RoomDto, Entities.Models.Room>();
 
 
             }

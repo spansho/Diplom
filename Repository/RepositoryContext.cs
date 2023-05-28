@@ -16,9 +16,9 @@ namespace Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
-        public DbSet<UserFromServer> User { get; set; }
+        public DbSet<Room> User { get; set; }
 
-        public DbSet<Room> Room { get;}
+        public DbSet<Models.Room> Room { get;}
 
     }
 }

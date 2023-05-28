@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Repository
 {
-    public class RoomRepository : RepositoryBase<Room>, IRoomRepository
+    public class RoomRepository : RepositoryBase<Entities.Models.Room>, IRoomRepository
     {
         public RoomRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
 
-        public void CreateRoom(Room room)
+        public void CreateRoom(Entities.Models.Room room)
         {
             Create(room);
         }
@@ -21,12 +21,12 @@ namespace Repository
             Delete(GetRoomByLink(LinkRoom));
         }
 
-        public Room GetRoomByLink(string LinkRoom)
+        public Entities.Models.Room GetRoomByLink(string LinkRoom)
         {
             return FindByCondition(e => e.LinkToRoom.Equals(LinkRoom), true).SingleOrDefault();
         }
 
-        public Room GetRoomById(string id)
+        public Entities.Models.Room GetRoomById(string id)
         {
             return FindByCondition(e => e.RoomId.Equals(id), true).SingleOrDefault();
         }
