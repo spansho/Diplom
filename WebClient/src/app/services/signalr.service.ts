@@ -8,11 +8,11 @@ import { State } from '../state';
 export class SignalRService {
   public isConected = false;
   public hubConnection: signalR.HubConnection;
-  public startConnection = () => {
+  public async startConnection(): Promise<void> {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/voting')
+      .withUrl('http://localhost:5000/voting')
       .build();
-    this.hubConnection
+    await this.hubConnection
       .start()
       .then(() => {
         console.log('Connection started');

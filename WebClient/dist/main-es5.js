@@ -1396,7 +1396,7 @@
 
           this.http = http;
           this.zone = zone;
-          this.apiRoot = "api";
+          this.apiRoot = "http://localhost:5000/api";
         }
 
         _createClass(ApiClient, [{
@@ -1531,7 +1531,7 @@
         this.isConected = false;
 
         this.startConnection = function () {
-          _this3.hubConnection = new _microsoft_signalr__WEBPACK_IMPORTED_MODULE_1__["HubConnectionBuilder"]().withUrl('/voting').build();
+          _this3.hubConnection = new _microsoft_signalr__WEBPACK_IMPORTED_MODULE_1__["HubConnectionBuilder"]().withUrl('http://localhost:5000/voting').build();
 
           _this3.hubConnection.start().then(function () {
             console.log('Connection started');

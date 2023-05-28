@@ -12,7 +12,7 @@
                 Planning Poker Room
             </span>
         </div>
-        <button id="create-new-room" (click)="createNewRoom()" [disabled]="!signalRService.isConected">
+        <button id="create-new-room" (click)="createNewRoom()">
             Create new room
         </button>
     </div>
@@ -23,7 +23,7 @@
         <span class="description">
             The first person to create a room is the moderator. Share the URL or room number with other team members to join the room.
         </span>
-        <button id="create-new-room" [disabled]="!signalRService.isConected">
+        <button id="create-new-room">
             Create new room
         </button>
         <span class="or">
@@ -36,7 +36,7 @@
                 </label>
                 <input type="text" name="room-num" id="room-num" placeholder="room number">
             </div>
-            <button id="enter-room" [disabled]="!signalRService.isConected">
+            <button id="enter-room">
                 Enter the room
             </button>
         </div>

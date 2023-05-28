@@ -668,7 +668,7 @@ class ApiClient {
     constructor(http, zone) {
         this.http = http;
         this.zone = zone;
-        this.apiRoot = "api";
+        this.apiRoot = "http://localhost:5000/api";
     }
     post(url, data, silent) {
         const observable = this.http.post(`${this.apiRoot}/${url}`, JSON.stringify(data), { headers: this.getHeaders(), observe: "response", withCredentials: this.getCredentialsOption() });
@@ -742,7 +742,7 @@ class SignalRService {
         this.isConected = false;
         this.startConnection = () => {
             this.hubConnection = new _microsoft_signalr__WEBPACK_IMPORTED_MODULE_1__["HubConnectionBuilder"]()
-                .withUrl('/voting')
+                .withUrl('http://localhost:5000/voting')
                 .build();
             this.hubConnection
                 .start()

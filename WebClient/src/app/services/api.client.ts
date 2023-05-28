@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
     providedIn: 'root'
 })
 export class ApiClient {
-    protected apiRoot = "api";
+    protected apiRoot = "http://localhost:5000/api";
 
     constructor(
         protected http: HttpClient,

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiClient } from '../services/api.client';
 import { State } from '../state';
-import { SignalRService } from '../services/signalr.service';
 
 @Component({
   selector: 'home',
@@ -10,8 +9,7 @@ import { SignalRService } from '../services/signalr.service';
 })
 export class HomeComponent implements OnInit {
   constructor(
-    private readonly apiClient: ApiClient,
-    public readonly signalRService: SignalRService
+    private readonly apiClient: ApiClient
   ) {
   }
 
@@ -24,12 +22,12 @@ export class HomeComponent implements OnInit {
   }
 
   public createNewRoom(): void {
-    // this.apiClient.post("Room/create", {}).then((data: any) => {
-    //   State.roomId = data.id;
-    //   State.roomLink = data.link;
+    this.apiClient.post("Room/create", {}).then((data: any) => {
+      State.roomId = data.id;
+      State.roomLink = data.link;
       
-    // });
-    window.location.href="/room";
+    });
+    // window.location.href="/room";
   }
 
 }
