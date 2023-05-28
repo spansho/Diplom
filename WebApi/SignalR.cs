@@ -61,6 +61,17 @@ namespace ServerSite
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false,groupName));
         }
 
+        public async Task StartNewVoting(string groupName)
+        {
+            var allUsers = _repository.RoomUser.GetAllRoomUsers(false,groupName);
+            foreach(var user in allUsers)
+            {
+                user.Estimate = string.Empty;
+            }
+            await Clients.Group(groupName).SendAsync("StartNewVoting", allUsers);
+            _repository.Save();
+        }
+
 
     }
 }
