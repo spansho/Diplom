@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Entities
 {
-    public class GradeFromUser
+    public class EstimateFromUser
     {
-        public string Grade;
+        public string Estimate;
         public string Id;
     }
 }

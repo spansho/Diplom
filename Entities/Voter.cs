@@ -8,7 +8,7 @@ namespace Entities
     {
         public string UserId;
         public string Name;
-        public string  Grade;
+        public string  Estimate;
         public bool isObserver;
     }
 }

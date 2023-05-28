@@ -26,16 +26,16 @@ namespace ServerSite
             {
                 if(roomVisitors.ContainsKey(groupName))
                 {
-                    roomVisitors[groupName].Add(new Voter { UserId = Context.ConnectionId,Name=name, Grade = string.Empty, isObserver = false });
+                    roomVisitors[groupName].Add(new Voter { UserId = Context.ConnectionId,Name=name, Estimate = string.Empty, isObserver = false });
                 }
                 else
                 {
                     roomVisitors.Add(groupName, new List<Voter>());
-                    roomVisitors[groupName].Add(new Voter { UserId = Context.ConnectionId,Name=name, Grade = string.Empty, isObserver = false });
+                    roomVisitors[groupName].Add(new Voter { UserId = Context.ConnectionId,Name=name, Estimate = string.Empty, isObserver = false });
                 }
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 await Clients.Caller.SendAsync("Receive", name);
-                await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Grade = string.Empty, Name = name, isObserver = false, Visitors = roomVisitors[groupName] });// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
+                await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = roomVisitors[groupName] });// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
             }
             //IOD И СCONECTION ID
             return new {Message="Такой комнаты не существует"};
@@ -57,10 +57,15 @@ namespace ServerSite
             await Clients.Others.SendAsync(message);
         }
 
-        public async Task Voting(GradeFromUser message, string groupName)
+        public async Task Voting(EstimateFromUser message, string groupName)
         {
-            //
-            await Clients.Group(groupName).SendAsync("Recieve", roomVisitors[groupName]);
+            for (int i = 0; i < roomVisitors[groupName].Count; i++) {
+                if (roomVisitors[groupName][i].UserId == message.Id) {
+                    roomVisitors[groupName][i].Estimate = message.Estimate;
+                }
+            }
+
+            await Clients.Group(groupName).SendAsync("ChangingEstimate", roomVisitors[groupName]);
         }
 
 
