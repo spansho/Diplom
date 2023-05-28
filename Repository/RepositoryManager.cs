@@ -47,7 +47,7 @@ namespace Repository
             get
             {
                 if (_roomRepository == null)
-                    _roomRepository = new RoomUserRepository(_repositoryContext);
+                    _roomUserRepository = new RoomUserRepository(_repositoryContext);
 
                 return _roomUserRepository;
             }
