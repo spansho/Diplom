@@ -13,30 +13,30 @@ namespace ServerSite
     public class VotingHub : Hub
     {
         private readonly IRepositoryManager _repository;
-        private Dictionary<string,List<RoomAngular>> roomVisitors;
+        private Dictionary<string,List<Voter>> roomVisitors;
         public VotingHub(IRepositoryManager repository) 
         { 
             _repository = repository; 
-            roomVisitors = new Dictionary<string, List<RoomAngular>>();
+            roomVisitors = new Dictionary<string, List<Voter>>();
         }
 
-        public async Task<object> Conect(string message, string groupName)
+        public async Task<object> Conect(string name, string groupName)
         {
             if (_repository.Room.GetRoomById(groupName) != null)
             {
                 if(roomVisitors.ContainsKey(groupName))
                 {
-                    roomVisitors[groupName].Add(new RoomAngular { UserId = Context.ConnectionId, Grade = string.Empty, isObserver = false });
+                    roomVisitors[groupName].Add(new Voter { UserId = Context.ConnectionId,Name=name, Grade = string.Empty, isObserver = false });
                 }
                 else
                 {
-                    roomVisitors.Add(groupName, new List<RoomAngular>());
-                    roomVisitors[groupName].Add(new RoomAngular { UserId = Context.ConnectionId, Grade = string.Empty, isObserver = false });
+                    roomVisitors.Add(groupName, new List<Voter>());
+                    roomVisitors[groupName].Add(new Voter { UserId = Context.ConnectionId,Name=name, Grade = string.Empty, isObserver = false });
                 }
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-                await Clients.Caller.SendAsync("Receive", message);
-                await Clients.Group(groupName).SendAsync("Receive", message);
-                return new { UserId = Context.ConnectionId,Grade=string.Empty, isObserver = false, Visitors = roomVisitors[groupName]};
+                await Clients.Caller.SendAsync("Receive", name);
+                await Clients.Group(groupName).SendAsync("Receive", name);// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
+                return new { UserId = Context.ConnectionId,Grade=string.Empty, Name = name,isObserver = false, Visitors = roomVisitors[groupName]};
             }
             //IOD И СCONECTION ID
             return new {Message="Такой комнаты не существует"};
@@ -58,7 +58,7 @@ namespace ServerSite
             await Clients.Others.SendAsync(message);
         }
 
-        public async Task<List<RoomAngular>> Voting(GradeFromUser message, string groupName)
+        public async Task<List<Voter>> Voting(GradeFromUser message, string groupName)
         {
             //
             await Clients.Group(groupName).SendAsync("Recieve",message);
