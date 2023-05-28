@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities
 {
-    public class UserFromServer
+    public class User
     {
         public string UserId;
         public string  Grade;
