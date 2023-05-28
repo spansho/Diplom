@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities
 {
-    public class User
+    public class RoomAngular
     {
         public string UserId;
         public string  Grade;
