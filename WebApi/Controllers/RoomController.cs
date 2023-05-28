@@ -34,7 +34,7 @@ namespace ServerSite.Controllers
             string roomLink = "https://uberDuupperSait/room/"+ guid;
             Room room = new Room
             {
-                NumberOfVisitorsIn = 1,
+                NumberOfVisitorsIn = 0,
                 RoomId = guid.ToString(),
                 LinkToRoom = roomLink
             };

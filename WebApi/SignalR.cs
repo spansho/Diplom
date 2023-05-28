@@ -27,6 +27,8 @@ namespace ServerSite
             }
 
             RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name, Estimate = string.Empty, isObserver = false, RoomId = groupName };
+            var vakidze = _repository.Room.GetRoomById(groupName);
+            vakidze.NumberOfVisitorsIn++;
             _repository.RoomUser.CreateRoomUser(roomUser);
             _repository.Save();
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
