@@ -25,7 +25,7 @@ namespace Repository
 
         public IEnumerable<RoomUser> GetAllRoomUsers(bool trackChanges, string roomId)
         {
-            return FindAll(trackChanges).OrderBy(c => c.RoomId == roomId).ToList();
+            return FindAll(trackChanges).Where(c => c.RoomId == roomId).ToList();
         }
 
         public RoomUser GetRoomUserById(string id)
