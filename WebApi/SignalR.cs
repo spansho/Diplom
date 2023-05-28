@@ -35,8 +35,7 @@ namespace ServerSite
                 }
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 await Clients.Caller.SendAsync("Receive", name);
-                await Clients.Group(groupName).SendAsync("Receive", name);// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
-                return new { UserId = Context.ConnectionId,Grade=string.Empty, Name = name,isObserver = false, Visitors = roomVisitors[groupName]};
+                await Clients.Group(groupName).SendAsync("Receive", new { UserId = Context.ConnectionId, Grade = string.Empty, Name = name, isObserver = false, Visitors = roomVisitors[groupName] });// TODO ЧТО БЫ РАССЫЛАЛОСЬ ВОЗМООЖНО НУЖН ХАРКНУТЬ СЮДА
             }
             //IOD И СCONECTION ID
             return new {Message="Такой комнаты не существует"};
@@ -61,8 +60,7 @@ namespace ServerSite
         public async Task<List<Voter>> Voting(GradeFromUser message, string groupName)
         {
             //
-            await Clients.Group(groupName).SendAsync("Recieve",message);
-            return roomVisitors[groupName];    
+            await Clients.Group(groupName).SendAsync("Recieve", roomVisitors[groupName]);
         }
 
 
