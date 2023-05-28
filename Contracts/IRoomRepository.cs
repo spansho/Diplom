@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Collections.Generic;
 
 namespace Contracts
 {
@@ -13,6 +14,7 @@ namespace Contracts
         Room GetRoomByLink(string LinkRoom);
 
         Room GetRoomById(string id);
+
 
     }
 }

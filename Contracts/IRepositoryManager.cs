@@ -10,6 +10,7 @@ namespace Contracts
     {
         IUserRepository User { get; }
         IRoomRepository Room { get; }
+        IRoomUser RoomUser { get; }
         void Save();
     }
 }

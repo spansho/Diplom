@@ -13,7 +13,7 @@ namespace Repository
         private RepositoryContext _repositoryContext;
         private IUserRepository _userRepository;
         private IRoomRepository _roomRepository;
-
+        private IRoomUser _roomUserRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -38,6 +38,17 @@ namespace Repository
                     _roomRepository = new RoomRepository(_repositoryContext);
                
                 return _roomRepository;
+            }
+        }
+
+        public IRoomUser RoomUser
+        {
+            get
+            {
+                if (_userRepository == null)
+                    _userRepository = new UserRepository(_repositoryContext);
+
+                return _roomUserRepository;
             }
         }
 
