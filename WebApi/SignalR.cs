@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerSite
@@ -11,11 +13,11 @@ namespace ServerSite
     public class VotingHub : Hub
     {
         private readonly IRepositoryManager _repository;
-        private Dictionary<string,List<string>> roomVisitors;
+        private Dictionary<string,List<RoomAngular>> roomVisitors;
         public VotingHub(IRepositoryManager repository) 
         { 
             _repository = repository; 
-            roomVisitors = new Dictionary<string, List<string>>();
+            roomVisitors = new Dictionary<string, List<RoomAngular>>();
         }
 
         public async Task<object> Conect(string message, string groupName)
@@ -24,12 +26,12 @@ namespace ServerSite
             {
                 if(roomVisitors.ContainsKey(groupName))
                 {
-                    roomVisitors[groupName].Add(Context.ConnectionId);
+                    roomVisitors[groupName].Add(new RoomAngular { UserId = Context.ConnectionId, Grade = string.Empty, isObserver = false });
                 }
                 else
                 {
-                    roomVisitors.Add(groupName, new List<string>());
-                    roomVisitors[groupName].Add(Context.ConnectionId);
+                    roomVisitors.Add(groupName, new List<RoomAngular>());
+                    roomVisitors[groupName].Add(new RoomAngular { UserId = Context.ConnectionId, Grade = string.Empty, isObserver = false });
                 }
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 await Clients.Caller.SendAsync("Receive", message);
@@ -51,16 +53,16 @@ namespace ServerSite
                 _repository.Room.DeleteRoom(room.RoomId.ToString());
                 roomVisitors.Remove(groupName);
             }
-            roomVisitors[groupName].Remove(Context.ConnectionId);
+            roomVisitors[groupName].Remove(roomVisitors[groupName].FirstOrDefault(x=>x.UserId==Context.ConnectionId.ToString()));
             //TODO ТУТ ВОЗВРАТ ПОД ВОПРОСОМ
             await Clients.Others.SendAsync(message);
         }
 
-        public async Task<Object> Voting(GradeFromUser message, string groupName)
+        public async Task<List<RoomAngular>> Voting(GradeFromUser message, string groupName)
         {
             //
             await Clients.Group(groupName).SendAsync("Recieve",message);
-            return new RoomAngular {UserId=message.Id, Grade=message.Grade,isObserver=false,Visitors= roomVisitors[groupName]};    
+            return roomVisitors[groupName];    
         }
 
 

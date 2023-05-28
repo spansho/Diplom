@@ -9,6 +9,5 @@ namespace Entities
         public string UserId;
         public string  Grade;
         public bool isObserver;
-        public List<string> Visitors;
     }
 }
