@@ -15,7 +15,7 @@ namespace Repository
         private IUserRepository _userRepository;
         private IRoomRepository _roomRepository;
         private IRoomUserRepository _roomUserRepository;
-        private ITaskRepository _taskRepository;
+        private IObjectiveRepository _objectiveRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -54,14 +54,14 @@ namespace Repository
             }
         }
 
-        public ITaskRepository Task
+        public IObjectiveRepository Task
         {
             get
             {
-                if (_taskRepository == null)
-                    _taskRepository = new TaskkRepository(_repositoryContext);
+                if (_objectiveRepository == null)
+                    _objectiveRepository = new ObjectiveRepository(_repositoryContext);
 
-                return _taskRepository;
+                return _objectiveRepository;
             }
         }
 

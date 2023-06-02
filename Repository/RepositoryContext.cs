@@ -21,7 +21,7 @@ namespace Entities
         public DbSet<Room> Room { get;}
         public DbSet<RoomUser>  RoomUsers { get; set; }
 
-        public DbSet<Taskk> Task { get; set; }
+        public DbSet<Objective> Objective { get; set; }
 
     }
 }

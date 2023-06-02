@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Entities.Models
 {
-    public class Taskk
+    public class Objective
     {
-        [Column("TaskId")]
+        [Column("Id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string TaskId { get; set; }
+        public string ObjectiveId { get; set; }
 
         public string Description { get; set; }
 
@@ -19,7 +19,8 @@ namespace Entities.Models
 
         public DateTime CreatingTime { get; set; }
 
-        public string IdRoom { get; set; }
+        [ForeignKey(nameof(Room))]
+        public string RoomId { get; set; }
 
         public Room Room { get; set; }
 
