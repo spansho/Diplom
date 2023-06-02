@@ -26,7 +26,7 @@ namespace ServerSite
                 await Clients.Caller.SendAsync("Receive", "Такой комнаты не существует");
             }
 
-            RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name, Estimate = string.Empty, isObserver = false, RoomId = groupName };
+            RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name,isObserver = false, RoomId = groupName };
             var vakidze = _repository.Room.GetRoomById(groupName);
             vakidze.NumberOfVisitorsIn++;
             _repository.RoomUser.CreateRoomUser(roomUser);
@@ -52,11 +52,11 @@ namespace ServerSite
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
         }
 
-        public async Task Voting(string estimate, string userId, string groupName)
+        public async Task Voting(string estimate,string taskId, string userId, string groupName)
         {
 
-            var roomUser = _repository.RoomUser.GetRoomUserById(userId);
-            roomUser.Estimate = estimate;
+            var task = _repository.Task.GetTaskById(taskId);
+            task.Estimation +=int.Parse(estimate);
             _repository.Save();
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false,groupName));
         }
@@ -64,10 +64,11 @@ namespace ServerSite
         public async Task StartNewVoting(string groupName)
         {
             var allUsers = _repository.RoomUser.GetAllRoomUsers(true, groupName);
-            foreach(var user in allUsers)
-            {
-                user.Estimate = string.Empty;
-            }
+            //TODO Переделка голосования
+            //foreach(var user in allUsers)
+            //{
+            //    user.Estimate = string.Empty;
+            //}
             await Clients.Group(groupName).SendAsync("StartNewVoting", allUsers);
             _repository.Save();
         }
@@ -75,6 +76,21 @@ namespace ServerSite
         public async Task RevealCards(string groupName)
         {
             await Clients.Group(groupName).SendAsync("RevealCards");
+        }
+
+        public async Task AddNewTask(string id,string RoomId )
+        {
+            Taskk task = new Taskk { Description = id,IdRoom=RoomId,Link=string.Empty,TaskId=string.Empty,Estimation=0,CreatingTime=DateTime.Now};
+            _repository.Task.Createtask(task);
+        }
+
+        public async Task SendTaskForVoting(string groupName,string RoomId)
+        {
+            //TODO CHANJE nameMhod
+            var tasksCollection=_repository.Task.GetAllTasks(RoomId);
+
+            //TODO Эта дура будет минимальное возвроащать каждый раз.Может добавить флаг или что то в этом духе.
+            await Clients.Group(groupName).SendAsync("nameMethod??", tasksCollection.Where(task => task.Estimation != 0).Min(x => x.IdRoom));
         }
 
 

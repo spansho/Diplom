@@ -43,7 +43,6 @@ namespace ServerSite.Controllers
             _repository.Save();
 
             //return Redirect();
-            // ВЕРНУТЬ НАХУЙ МОДЕЛЬ С ВИДЕО ЕБАННОГО
             List<User> users = new List<User>();    
 
             return Ok(new {Link= roomLink ,Id=guid,Users=users});

@@ -11,6 +11,8 @@ namespace Contracts
         IUserRepository User { get; }
         IRoomRepository Room { get; }
         IRoomUserRepository RoomUser { get; }
+
+        ITaskRepository Task { get; }
         void Save();
     }
 }
