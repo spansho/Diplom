@@ -54,7 +54,7 @@ namespace Repository
             }
         }
 
-        public IObjectiveRepository Task
+        public IObjectiveRepository Objective
         {
             get
             {

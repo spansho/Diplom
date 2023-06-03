@@ -52,10 +52,10 @@ namespace ServerSite
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
         }
 
-        public async Task Voting(string estimate,string taskId, string userId, string groupName)
+        public async Task Voting(string estimate,string objectiveId, string userId, string groupName)
         {
 
-            var task = _repository.Task.GetObjectiveById(taskId);
+            var task = _repository.Objective.GetObjectiveById(objectiveId);
             task.Estimation +=int.Parse(estimate);
             _repository.Save();
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false,groupName));
@@ -80,14 +80,14 @@ namespace ServerSite
 
         public async Task AddNewTask(string id,string RoomId )
         {
-            Objective task = new Objective { Description = id,RoomId=RoomId,Link=string.Empty,ObjectiveId=string.Empty,Estimation=0,CreatingTime=DateTime.Now};
-            _repository.Task.CreateObjective(task);
+            Objective objective = new Objective { Description = id,RoomId=RoomId,Link=string.Empty,ObjectiveId=string.Empty,Estimation=0,CreatingTime=DateTime.Now};
+            _repository.Objective.CreateObjective(objective);
         }
 
         public async Task SendTaskForVoting(string groupName,string RoomId)
         {
             //TODO CHANJE nameMhod
-            var tasksCollection=_repository.Task.GetAllObjective(RoomId);
+            var tasksCollection=_repository.Objective.GetAllObjective(RoomId);
 
             //TODO Эта дура будет минимальное возвроащать каждый раз.Может добавить флаг или что то в этом духе.
             await Clients.Group(groupName).SendAsync("nameMethod??", tasksCollection.Where(task => task.Estimation != 0).Min(x => x.RoomId));
