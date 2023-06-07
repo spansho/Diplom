@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230602143320_GurenDan")]
-    partial class GurenDan
+    [Migration("20230606094013_Old")]
+    partial class Old
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,7 @@ namespace WebApi.Migrations
                 {
                     b.Property<string>("IssueId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Issue")
+                        .HasColumnName("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatingTime")
@@ -47,7 +47,7 @@ namespace WebApi.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Task");
+                    b.ToTable("Issue");
                 });
 
             modelBuilder.Entity("Entities.Models.Room", b =>
@@ -70,8 +70,11 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.RoomUser", b =>
                 {
-                    b.Property<string>("Issue")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Estimate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -82,7 +85,7 @@ namespace WebApi.Migrations
                     b.Property<bool>("isObserver")
                         .HasColumnType("bit");
 
-                    b.HasKey("Issue");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
@@ -91,7 +94,7 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
-                    b.Property<Guid>("Issue")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -102,7 +105,7 @@ namespace WebApi.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Issue");
+                    b.HasKey("Id");
 
                     b.ToTable("User");
                 });

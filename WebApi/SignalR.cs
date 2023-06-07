@@ -52,47 +52,53 @@ namespace ServerSite
             await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
         }
 
-        public async Task Voting(string estimate,string objectiveId, string userId, string groupName)
+        public async Task Voting(string estimate, string userId, string groupName, string issueId = "")
         {
+            var roomUser = _repository.RoomUser.GetRoomUserById(userId);
+            roomUser.Estimate = estimate;
+            if (!string.IsNullOrEmpty(issueId))
+            {
+                var issue = _repository.Issue.GetIssueById(issueId);
+                issue.numberOfVoters += 1;
+                int numberOfVotings = _repository.RoomUser.GetAllRoomUsers(true, groupName).Count();
+                if (issue.numberOfVoters ==numberOfVotings)
+                {
+                    issue.Estimation = issue.Estimation / numberOfVotings;
+                }
 
-            var task = _repository.Objective.GetObjectiveById(objectiveId);
-            task.Estimation +=int.Parse(estimate);
+            }
             _repository.Save();
-            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false,groupName));
+            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
         }
 
         public async Task StartNewVoting(string groupName)
         {
             var allUsers = _repository.RoomUser.GetAllRoomUsers(true, groupName);
-            //TODO Переделка голосования
-            //foreach(var user in allUsers)
-            //{
-            //    user.Estimate = string.Empty;
-            //}
+            foreach (var user in allUsers)
+            {
+                user.Estimate = string.Empty;
+            }
             await Clients.Group(groupName).SendAsync("StartNewVoting", allUsers);
             _repository.Save();
         }
 
-        public async Task RevealCards(string groupName)
+        public async Task RevealCards(string groupName,string issueId="")
         {
+            if(!string.IsNullOrEmpty(issueId))
+            {
+                var issue = _repository.Issue.GetIssueById(issueId);
+                int numberOfVotings = _repository.RoomUser.GetAllRoomUsers(true, groupName).Count();
+                issue.Estimation = issue.Estimation / numberOfVotings;
+            }
+            _repository.Save();
             await Clients.Group(groupName).SendAsync("RevealCards");
         }
 
         public async Task AddNewTask(string id,string RoomId )
         {
-            Objective objective = new Objective { Description = id,RoomId=RoomId,Link=string.Empty,ObjectiveId=string.Empty,Estimation=0,CreatingTime=DateTime.Now};
-            _repository.Objective.CreateObjective(objective);
+            Issue issue = new Issue { Description = id,RoomId=RoomId,Link=string.Empty,IssueId=string.Empty,Estimation=0,CreatingTime=DateTime.Now};
+            _repository.Issue.CreateIssue(issue);
         }
-
-        public async Task SendTaskForVoting(string groupName,string RoomId)
-        {
-            //TODO CHANJE nameMhod
-            var tasksCollection=_repository.Objective.GetAllObjective(RoomId);
-
-            //TODO Эта дура будет минимальное возвроащать каждый раз.Может добавить флаг или что то в этом духе.
-            await Clients.Group(groupName).SendAsync("nameMethod??", tasksCollection.Where(task => task.Estimation != 0).Min(x => x.RoomId));
-        }
-
 
     }
 }

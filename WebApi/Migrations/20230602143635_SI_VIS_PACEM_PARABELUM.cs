@@ -16,21 +16,21 @@ namespace WebApi.Migrations
 
             migrationBuilder.RenameTable(
                 name: "Task",
-                newName: "Objective");
+                newName: "Issue");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Task_RoomId",
-                table: "Objective",
+                table: "Issue",
                 newName: "IX_Objective_RoomId");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Objective",
-                table: "Objective",
+                table: "Issue",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Objective_Room_RoomId",
-                table: "Objective",
+                table: "Issue",
                 column: "RoomId",
                 principalTable: "Room",
                 principalColumn: "RoomId",
@@ -41,14 +41,14 @@ namespace WebApi.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Objective_Room_RoomId",
-                table: "Objective");
+                table: "Issue");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Objective",
-                table: "Objective");
+                table: "Issue");
 
             migrationBuilder.RenameTable(
-                name: "Objective",
+                name: "Issue",
                 newName: "Task");
 
             migrationBuilder.RenameIndex(

@@ -5,17 +5,18 @@ using System.Text;
 
 namespace Entities.Models
 {
-    public class Objective
+    public class Issue
     {
         [Column("Id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string ObjectiveId { get; set; }
+        public string IssueId { get; set; }
 
         public string Description { get; set; }
 
         public int Estimation { get; set; }
 
         public string Link { get; set; }
+        public int numberOfVoters { get; set; }
 
         public DateTime CreatingTime { get; set; }
 

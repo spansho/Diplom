@@ -19,9 +19,9 @@ namespace WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Entities.Models.Objective", b =>
+            modelBuilder.Entity("Entities.Models.Issue", b =>
                 {
-                    b.Property<string>("ObjectiveId")
+                    b.Property<string>("IssueId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("nvarchar(450)");
@@ -41,11 +41,11 @@ namespace WebApi.Migrations
                     b.Property<string>("RoomId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ObjectiveId");
+                    b.HasKey("IssueId");
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Objective");
+                    b.ToTable("Issue");
                 });
 
             modelBuilder.Entity("Entities.Models.Room", b =>
@@ -70,6 +70,9 @@ namespace WebApi.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Estimate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -105,7 +108,7 @@ namespace WebApi.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Entities.Models.Objective", b =>
+            modelBuilder.Entity("Entities.Models.Issue", b =>
                 {
                     b.HasOne("Entities.Models.Room", "Room")
                         .WithMany()

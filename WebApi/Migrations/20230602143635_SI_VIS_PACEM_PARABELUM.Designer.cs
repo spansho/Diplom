@@ -21,11 +21,11 @@ namespace WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Entities.Models.Objective", b =>
+            modelBuilder.Entity("Entities.Models.Issue", b =>
                 {
-                    b.Property<string>("ObjectiveId")
+                    b.Property<string>("IssueId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
+                        .HasColumnName("Issue")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatingTime")
@@ -43,11 +43,11 @@ namespace WebApi.Migrations
                     b.Property<string>("RoomId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ObjectiveId");
+                    b.HasKey("IssueId");
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Objective");
+                    b.ToTable("Issue");
                 });
 
             modelBuilder.Entity("Entities.Models.Room", b =>
@@ -70,7 +70,7 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.RoomUser", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("Issue")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -82,7 +82,7 @@ namespace WebApi.Migrations
                     b.Property<bool>("isObserver")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("Issue");
 
                     b.HasIndex("RoomId");
 
@@ -91,7 +91,7 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("Issue")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -102,12 +102,12 @@ namespace WebApi.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Issue");
 
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Entities.Models.Objective", b =>
+            modelBuilder.Entity("Entities.Models.Issue", b =>
                 {
                     b.HasOne("Entities.Models.Room", "Room")
                         .WithMany()

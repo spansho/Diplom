@@ -12,7 +12,7 @@ namespace Contracts
         IRoomRepository Room { get; }
         IRoomUserRepository RoomUser { get; }
 
-        IObjectiveRepository Objective { get; }
+        IIssueRepository Issue { get; }
         void Save();
     }
 }

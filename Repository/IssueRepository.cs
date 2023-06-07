@@ -8,32 +8,32 @@ using System.Text;
 
 namespace Repository
 {
-    public class ObjectiveRepository : RepositoryBase<Objective>, IObjectiveRepository
+    public class IssueRepository : RepositoryBase<Issue>, IIssueRepository
     {
-        public ObjectiveRepository(RepositoryContext repositoryContext) : base(repositoryContext)
+        public IssueRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
-        public void CreateObjective(Objective objective)
+        public void CreateIssue(Issue objective)
         {
             Create(objective);
         }
 
-        public void DeleteObjective(Objective objective)
+        public void DeleteIssue(Issue objective)
         {
             Delete(objective);
         }
 
-        public IEnumerable<Objective> GetAllObjective(string id)
+        public IEnumerable<Issue> GetAllIssue(string id)
         {
             return FindByCondition(x => x.RoomId == id, true);
         }
 
-        public Objective GetObjectiveById(string id)
+        public Issue GetIssueById(string id)
         {
             return FindByCondition(x => x.RoomId == id,true).FirstOrDefault();
         }
 
-        public void UpdateObjective(Objective  objective)
+        public void UpdateIssue(Issue  objective)
         {
            Update(objective);
         }

@@ -11,6 +11,8 @@ namespace Entities.Models
         public string Name { get; set; }
         public bool isObserver { get; set; }
 
+        public string Estimate { get; set; }
+
         [ForeignKey(nameof(User))]
         public string RoomId { get; set; }
         public Room Room { get; set; }
