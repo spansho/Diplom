@@ -60,11 +60,6 @@ namespace ServerSite
             {
                 var issue = _repository.Issue.GetIssueById(issueId);
                 issue.numberOfVoters += 1;
-                int numberOfVotings = _repository.RoomUser.GetAllRoomUsers(true, groupName).Count();
-                if (issue.numberOfVoters ==numberOfVotings)
-                {
-                    issue.Estimation = issue.Estimation / numberOfVotings;
-                }
 
             }
             _repository.Save();
