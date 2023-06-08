@@ -59,6 +59,7 @@ namespace ServerSite
             if (!string.IsNullOrEmpty(issueId))
             {
                 var issue = _repository.Issue.GetIssueById(issueId);
+                issue.Estimation += int.Parse(estimate);
                 issue.numberOfVoters += 1;
 
             }
@@ -79,6 +80,7 @@ namespace ServerSite
 
         public async Task RevealCards(string groupName,string issueId="")
         {
+            //ВОТ ЗДЕСЬ НАДО БУДЕТ СЛОЖИТЬ ОЦЕНКИ ВСЕ ЧЕЛОВ И ПОДЕЛИТЬ.
             if(!string.IsNullOrEmpty(issueId))
             {
                 var issue = _repository.Issue.GetIssueById(issueId);
