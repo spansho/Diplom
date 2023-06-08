@@ -54,7 +54,7 @@ namespace Repository
             }
         }
 
-        public IIssueRepository Objective
+        public IIssueRepository Issue
         {
             get
             {
