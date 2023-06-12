@@ -7,6 +7,8 @@ namespace Entities.Models
 {
     public class RoomUser
     {
+        [Column("RoomUserId")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string Name { get; set; }
         public bool isObserver { get; set; }

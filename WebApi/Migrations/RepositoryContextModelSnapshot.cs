@@ -38,6 +38,12 @@ namespace WebApi.Migrations
                     b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Priority")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RoomId")
                         .HasColumnType("nvarchar(450)");
 
@@ -69,6 +75,8 @@ namespace WebApi.Migrations
             modelBuilder.Entity("Entities.Models.RoomUser", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("RoomUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Estimate")
