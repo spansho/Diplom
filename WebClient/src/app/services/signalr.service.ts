@@ -14,6 +14,7 @@ export class SignalRService {
   public readonly sendEstimate$ = new Subject<any>();
   public readonly startNewVoting$ = new Subject<any>();
   public readonly revealCards$ = new Subject<void>();
+  public readonly createNewIssues$ = new Subject<any>();
 
   public hubConnection: signalR.HubConnection;
   public async startConnection(): Promise<void> {
@@ -46,6 +47,11 @@ export class SignalRService {
 
     this.hubConnection.on("RevealCards", () => {
       this.revealCards$.next();
+    });
+
+    this.hubConnection.on("IssuesListChanged", (message) => {
+      console.log(message);
+      this.createNewIssues$.next(message);
     });
   };
 
@@ -95,10 +101,21 @@ export class SignalRService {
       });
   };
 
-  public async revealCards(roomId: string) {
-    await this.hubConnection.invoke("RevealCards", roomId)
+  public async revealCards(roomId: string, estimation: string, issueId = "") {
+    await this.hubConnection.invoke("RevealCards", roomId, estimation, issueId)
       .then((data: any) => {
         console.log("revealCardsOK");
+        console.log(data);
+      })
+      .catch(function (err) {
+          return console.error(err.toString());
+      });
+  };
+
+  public async createNewIssues(roomId: string, issueName: string) {
+    await this.hubConnection.invoke("CreateNewIssueAsync", roomId, issueName)
+      .then((data: any) => {
+        console.log("CreateNewIssueAsync");
         console.log(data);
       })
       .catch(function (err) {

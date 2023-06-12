@@ -18,11 +18,14 @@
         <button class="leave-the-room" [disabled]="!signalRService.isConected" (click)="leaveRoom()">
             Leave the room
         </button>
+        <button class="issue-btn" [disabled]="!signalRService.isConected" (click)="issuesPopupOpen = true">
+            <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.75862 2C5.10177 2 3.75862 3.34315 3.75862 5V19C3.75862 20.6569 5.10177 22 6.75862 22H18.7586C20.4155 22 21.7586 20.6569 21.7586 19V5C21.7586 3.34315 20.4155 2 18.7586 2H6.75862ZM5.75862 5C5.75862 4.44772 6.20634 4 6.75862 4H18.7586C19.3109 4 19.7586 4.44772 19.7586 5V19C19.7586 19.5523 19.3109 20 18.7586 20H6.75862C6.20634 20 5.75862 19.5523 5.75862 19V5ZM8.75862 7C8.20634 7 7.75862 7.44772 7.75862 8C7.75862 8.55228 8.20634 9 8.75862 9H16.7586C17.3109 9 17.7586 8.55228 17.7586 8C17.7586 7.44772 17.3109 7 16.7586 7H8.75862ZM8.75862 11C8.20634 11 7.75862 11.4477 7.75862 12C7.75862 12.5523 8.20634 13 8.75862 13H16.7586C17.3109 13 17.7586 12.5523 17.7586 12C17.7586 11.4477 17.3109 11 16.7586 11H8.75862ZM7.75862 16C7.75862 15.4477 8.20634 15 8.75862 15H12.7586C13.3109 15 13.7586 15.4477 13.7586 16C13.7586 16.5523 13.3109 17 12.7586 17H8.75862C8.20634 17 7.75862 16.5523 7.75862 16Z" fill="currentColor"></path></svg>
+        </button>
     </div>
     <div class="body">
         <a *ngIf="false" class="invite-players-link" href="">Invite players</a>
         <div class="card card-2" *ngIf="roomModel?.visitors?.length > 1">
-            <div class="card-body" [class.selected]="roomModel?.visitors[1]?.estimate !== ''">
+            <div class="card-body" [class.selected]="roomModel?.visitors[1]?.estimate">
                 <span *ngIf="averageEstimate">{{ roomModel?.visitors[1]?.estimate }}</span>
             </div>
             <span class="card-name">{{ roomModel?.visitors[1]?.name }}</span>
@@ -30,19 +33,19 @@
         <div class="table-wrapper">
             <div class="left">
                 <div class="card card-5" *ngIf="roomModel?.visitors?.length > 4">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[4]?.estimate !== ''">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[4]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[4]?.estimate }}</span>
                     </div>
                     <span class="card-name">{{ roomModel?.visitors[4]?.name }}</span>
                 </div>
                 <div class="card card-3" *ngIf="roomModel?.visitors?.length > 2">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[2]?.estimate !== ''">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[2]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[2]?.estimate }}</span>
                     </div>
                     <span class="card-name">{{ roomModel?.visitors[2]?.name }}</span>
                 </div>
                 <div class="card card-7" *ngIf="roomModel?.visitors?.length > 6">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[6]?.estimate !== ''">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[6]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[6]?.estimate }}</span>
                     </div>
                     <span class="card-name">{{ roomModel?.visitors[6]?.name }}</span>
@@ -62,19 +65,19 @@
             </div>
             <div class="right">
                 <div class="card card-8" *ngIf="roomModel?.visitors?.length > 7">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[7]?.estimate !== ''">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[7]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[7]?.estimate }}</span>
                     </div>
                     <span class="card-name">{{ roomModel?.visitors[7]?.name }}</span>
                 </div>
                 <div class="card card-4" *ngIf="roomModel?.visitors?.length > 3">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[3]?.estimate !== ''">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[3]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[3]?.estimate }}</span>
                     </div>
                     <span class="card-name">{{ roomModel?.visitors[3]?.name }}</span>
                 </div>
                 <div class="card card-6" *ngIf="roomModel?.visitors?.length > 5">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[5]?.estimate !== ''">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[5]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[5]?.estimate }}</span>
                     </div>
                     <span class="card-name">{{ roomModel?.visitors[5]?.name }}</span>
@@ -82,7 +85,7 @@
             </div>
         </div>
         <div class="card card-1" *ngIf="roomModel?.visitors?.length > 0">
-            <div class="card-body" [class.selected]="roomModel?.visitors[0]?.estimate !== ''">
+            <div class="card-body" [class.selected]="roomModel?.visitors[0]?.estimate">
                 <span *ngIf="averageEstimate">{{ roomModel?.visitors[0]?.estimate }}</span>
             </div>
             <span class="card-name">{{ roomModel?.visitors[0]?.name }}</span>
@@ -133,6 +136,47 @@
             <button class="btn pop-up-btn" (click)="closeNamePopUp()" [disabled]="roomName === ''">
                 Continue to game
             </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="issuesPopupOpen" class="reg-confirm">
+    <div class="right-sidebar-wrapper">
+        <div class="sidebar-header">
+            <div class="left">
+                <span>Issues</span>
+            </div>
+            <div class="right">
+                <button class="pop-up-btn round-btn"
+                    (click)="issuesPopupClose()"
+                >
+                    <svg width="40" height="40" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.92898 7.92893C7.53845 8.31946 7.53845 8.95262 7.92898 9.34315L13.5858 15L7.92898 20.6569C7.53845 21.0474 7.53845 21.6805 7.92898 22.0711C8.3195 22.4616 8.95267 22.4616 9.34319 22.0711L15 16.4142L20.6569 22.0711C21.0474 22.4616 21.6806 22.4616 22.0711 22.0711C22.4616 21.6805 22.4616 21.0474 22.0711 20.6569L16.4143 15L22.0711 9.34315C22.4616 8.95262 22.4616 8.31946 22.0711 7.92893C21.6806 7.53841 21.0474 7.53841 20.6569 7.92893L15 13.5858L9.34319 7.92893C8.95267 7.53841 8.3195 7.53841 7.92898 7.92893Z" fill="currentColor"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div class="sidebar-body">
+            <div class="sidebar-body-content">
+                <ul class="issue-list">
+
+                </ul>
+                <div *ngIf="!newIssuesClick" class="new-issue" (click)="createNewIssues()">
+                    <button class="new-issue-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C11.4477 2 11 2.44772 11 3V11H3C2.44772 11 2 11.4477 2 12C2 12.5523 2.44772 13 3 13H11V21C11 21.5523 11.4477 22 12 22C12.5523 22 13 21.5523 13 21V13H21C21.5523 13 22 12.5523 22 12C22 11.4477 21.5523 11 21 11H13V3C13 2.44772 12.5523 2 12 2Z" fill="currentColor"></path></svg>
+                        <span>Add an issue</span>
+                    </button>
+                </div>
+                <div *ngIf="newIssuesClick" class="new-issue">
+                    <input type="text" name="issue-name" id="issue-name" placeholder="Write a title for the issue" value="{{ issueName }}" [(ngModel)]="issueName">
+                    <div class="issue-name-btns">
+                        <button class="new-issue-btn-close" (click)="newIssuesClick = false">
+                            <span>Cancel</span>
+                        </button>
+                        <button class="new-issue-btn-save" (click)="newIssuesClick = false">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

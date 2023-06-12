@@ -19,28 +19,28 @@ namespace ServerSite
             _repository = repository; 
         }
 
-        public async Task Conect(string name, string groupName)
+        public async Task Conect(string name, string roomId)
         {
-            if (_repository.Room.GetRoomById(groupName) is null)
+            if (_repository.Room.GetRoomById(roomId) is null)
             {
                 await Clients.Caller.SendAsync("Receive", "Такой комнаты не существует");
             }
 
-            RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name,isObserver = false, RoomId = groupName };
-            var vakidze = _repository.Room.GetRoomById(groupName);
+            RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name,isObserver = false, RoomId = roomId };
+            var vakidze = _repository.Room.GetRoomById(roomId);
             vakidze.NumberOfVisitorsIn++;
             _repository.RoomUser.CreateRoomUser(roomUser);
             _repository.Save();
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            await Clients.Caller.SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, groupName) });
-            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+            await Clients.Caller.SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, roomId) });
+            await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
         }
 
-        public async Task Disconeconect(string message, string groupName)
+        public async Task Disconeconect(string message, string roomId)
         {
             _repository.RoomUser.DeleteRoomUser(Context.ConnectionId);
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
-            var room =_repository.Room.GetRoomById(groupName);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+            var room =_repository.Room.GetRoomById(roomId);
             room.NumberOfVisitorsIn--;
             if(room.NumberOfVisitorsIn == 0)
             {
@@ -49,52 +49,47 @@ namespace ServerSite
             }
 
             _repository.Save();
-            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
+            await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
         }
 
-        public async Task Voting(string estimate, string userId, string groupName, string issueId = "")
+        public async Task Voting(string estimate, string userId, string roomId)
         {
             var roomUser = _repository.RoomUser.GetRoomUserById(userId);
             roomUser.Estimate = estimate;
-            if (!string.IsNullOrEmpty(issueId))
-            {
-                var issue = _repository.Issue.GetIssueById(issueId);
-                issue.Estimation += int.Parse(estimate);
-                issue.numberOfVoters += 1;
-
-            }
             _repository.Save();
-            await Clients.Group(groupName).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, groupName));
+            await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
         }
 
-        public async Task StartNewVoting(string groupName)
+        public async Task StartNewVoting(string roomId)
         {
-            var allUsers = _repository.RoomUser.GetAllRoomUsers(true, groupName);
+            var allUsers = _repository.RoomUser.GetAllRoomUsers(true, roomId);
             foreach (var user in allUsers)
             {
                 user.Estimate = string.Empty;
             }
-            await Clients.Group(groupName).SendAsync("StartNewVoting", allUsers);
+            await Clients.Group(roomId).SendAsync("StartNewVoting", allUsers);
             _repository.Save();
         }
 
-        public async Task RevealCards(string groupName,string issueId="")
+        public async Task RevealCards(string roomId, string estimation, string issueId)
         {
-            //ВОТ ЗДЕСЬ НАДО БУДЕТ СЛОЖИТЬ ОЦЕНКИ ВСЕ ЧЕЛОВ И ПОДЕЛИТЬ.
             if(!string.IsNullOrEmpty(issueId))
             {
                 var issue = _repository.Issue.GetIssueById(issueId);
-                int numberOfVotings = _repository.RoomUser.GetAllRoomUsers(true, groupName).Count();
-                issue.Estimation = issue.Estimation / numberOfVotings;
+                issue.Estimation = int.Parse(estimation);
             }
+
             _repository.Save();
-            await Clients.Group(groupName).SendAsync("RevealCards");
+            await Clients.Group(roomId).SendAsync("RevealCards");
         }
 
-        public async Task AddNewTask(string id,string RoomId )
+        public async Task CreateNewIssueAsync(string roomId, string name)
         {
-            Issue issue = new Issue { Description = id,RoomId=RoomId,Link=string.Empty,IssueId=string.Empty,Estimation=0,CreatingTime=DateTime.Now};
+            var issue = new Issue { Name = name, Description = string.Empty, Priority = "PP-2", RoomId = roomId, Link = string.Empty, IssueId = Guid.NewGuid().ToString(), Estimation = 0, CreatingTime = DateTime.Now };
             _repository.Issue.CreateIssue(issue);
+
+            var issues = _repository.Issue.GetAllIssues(roomId);
+            await Clients.Group(roomId).SendAsync("IssuesListChanged");
         }
 
     }

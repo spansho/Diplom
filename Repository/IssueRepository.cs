@@ -23,14 +23,14 @@ namespace Repository
             Delete(objective);
         }
 
-        public IEnumerable<Issue> GetAllIssue(string id)
+        public IEnumerable<Issue> GetAllIssues(string id)
         {
             return FindByCondition(x => x.RoomId == id, true);
         }
 
         public Issue GetIssueById(string id)
         {
-            return FindByCondition(x => x.RoomId == id,true).FirstOrDefault();
+            return FindByCondition(x => x.IssueId == id, true).FirstOrDefault();
         }
 
         public void UpdateIssue(Issue  objective)

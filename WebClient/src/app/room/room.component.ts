@@ -15,16 +15,20 @@ export class RoomComponent implements OnInit {
   public isInvitePlayersPopUpOpen = false;
   public isNamePopUpOpen = false;
   public didEveryoneVote = false;
+  public issuesPopupOpen = false;
+  public newIssuesClick = false;
   public readonly estimates = ["0", "0,5", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
 
   private readonly unsubscribe$ = new Subject<void>();
 
   public roomId: string;
   public roomName = "";
+  public issueName = "";
   public link = window.location.href;
   public roomModel: any;
   public averageEstimate = null;
   public selectedEstimate = "";
+  public issuesList: any;
 
   constructor(
     public readonly signalRService: SignalRService,
@@ -48,6 +52,7 @@ export class RoomComponent implements OnInit {
       .subscribe(message => {
         console.log("enterRoom$");
         this.roomModel = message;
+        console.log(this.roomModel);
       });
 
     this.signalRService.sendEstimate$
@@ -57,7 +62,7 @@ export class RoomComponent implements OnInit {
         this.roomModel.visitors = message;
         this.didEveryoneVote = true;
         this.roomModel.visitors.forEach(visitor => {
-          if (visitor.estimate === '') {
+          if (!visitor.estimate) {
             this.didEveryoneVote = false;
           }
         });
@@ -70,7 +75,7 @@ export class RoomComponent implements OnInit {
         this.roomModel.visitors = message;
         this.didEveryoneVote = true;
         this.roomModel.visitors.forEach(visitor => {
-          if (visitor.estimate === '') {
+          if (!visitor.estimate) {
             this.didEveryoneVote = false;
           }
         });
@@ -82,15 +87,17 @@ export class RoomComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         console.log("revealCards$");
-        let sumEstimates = 0;
-        this.roomModel.visitors.forEach(visitor => {
-          sumEstimates += Number(visitor.estimate);
-        });
-    
-        this.averageEstimate = sumEstimates / this.roomModel.visitors.length;
-        this.averageEstimate = this.averageEstimate.toFixed(2);
     });
-    // не адекватный костыль на предзащиту, на защите не прокатит 
+
+    this.signalRService.createNewIssues$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(message => {
+        console.log("createNewIssues$");
+        this.issuesList = message;
+    });
+
+    // не адекватный костыль на предзащиту, на защите не прокатит.
+    // Почему сразу не прокатит?
     window.onfocus = () => {
     };
     window.onmousemove = () => {
@@ -140,11 +147,27 @@ export class RoomComponent implements OnInit {
   }
 
   public async revealCards(): Promise<void> {
-    await this.signalRService.revealCards(this.roomId);
+    let sumEstimates = 0;
+    this.roomModel.visitors.forEach(visitor => {
+      sumEstimates += Number(visitor.estimate);
+    });
+
+    this.averageEstimate = sumEstimates / this.roomModel.visitors.length;
+    this.averageEstimate = this.averageEstimate.toFixed(2);
+    await this.signalRService.revealCards(this.roomId, this.averageEstimate);
   }
 
   public async startNewVoting(): Promise<void> {
     await this.signalRService.startNewVoting(this.roomId);
+  }
+
+  public issuesPopupClose(): void {
+    this.issuesPopupOpen = false;
+    this.newIssuesClick = false;
+  }
+
+  public createNewIssues(): void {
+    this.newIssuesClick = true;
   }
 
 }

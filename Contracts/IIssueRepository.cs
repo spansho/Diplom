@@ -16,6 +16,6 @@ namespace Contracts
 
         void UpdateIssue(Issue objective);
 
-        IEnumerable<Issue> GetAllIssue(string id);
+        IEnumerable<Issue> GetAllIssues(string id);
     }
 }

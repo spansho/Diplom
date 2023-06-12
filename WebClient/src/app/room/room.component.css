@@ -1,3 +1,121 @@
+.right-sidebar-wrapper {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 480px;
+    background-color: #EAE7DC;
+}
+
+.right-sidebar-wrapper .sidebar-header {
+    display: flex;
+    height: 10rem;
+    justify-content: space-between;
+    left: 0;
+    padding: 0 4rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.right-sidebar-wrapper .sidebar-header .left {
+    align-items: center;
+    display: flex;
+    height: 10rem;
+}
+
+.right-sidebar-wrapper .sidebar-header .left span {
+    font-size: 20px;
+}
+
+.right-sidebar-wrapper .sidebar-header .right {
+    align-items: center;
+    display: flex;
+    height: 10rem;
+}
+
+.right-sidebar-wrapper .sidebar-header .right button {
+    width: 40px;
+    height: 40px;
+}
+
+.sidebar-body {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 10rem;
+}
+
+.sidebar-body-content {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    max-height: 100%;
+    width: 100%;
+}
+
+.issue-list {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    overflow-y: auto;
+    padding: 2px 4rem 4px;
+}
+
+.new-issue {
+    padding: 1.6rem 4rem;
+    width: 100%;
+}
+
+.issue-btn {
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+}
+
+.new-issue-btn {
+    background: transparent;
+    height: 4.8rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #EAE7DC;
+    border: none;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: center;
+    color: #000000;
+}
+
+.new-issue-btn span {
+    font-size: 20px;
+    margin-left: 8px;
+}
+
+#issue-name {
+    height: 48px;
+    width: 100%;
+    font-size: 18px;
+}
+
+.issue-name-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+.new-issue-btn-save {
+    background: #E98074;
+}
+
 .room-page {
     margin: 0 40px;
     height: 100vh;
@@ -35,12 +153,12 @@
 
 .room-page .header .leave-the-room {
     position: absolute;
-    right: 0;
+    right: 68px;
 }
 
 .room-page .header .invite-players {
     position: absolute;
-    right: 214px;
+    right: 282px;
 }
 
 .estimate-btn {

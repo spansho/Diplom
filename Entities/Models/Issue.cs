@@ -10,19 +10,15 @@ namespace Entities.Models
         [Column("Id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string IssueId { get; set; }
-
+        public string Name { get; set; }
         public string Description { get; set; }
-
+        public string Priority { get; set; }
         public int Estimation { get; set; }
-
         public string Link { get; set; }
-        public int numberOfVoters { get; set; }
-
         public DateTime CreatingTime { get; set; }
 
         [ForeignKey(nameof(Room))]
         public string RoomId { get; set; }
-
         public Room Room { get; set; }
 
     }
