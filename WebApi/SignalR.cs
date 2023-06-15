@@ -28,7 +28,6 @@ namespace ServerSite
 
             RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name,isObserver = false, RoomId = roomId };
             var vakidze = _repository.Room.GetRoomById(roomId);
-            vakidze.NumberOfVisitorsIn++;
             _repository.RoomUser.CreateRoomUser(roomUser);
             _repository.Save();
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
@@ -89,7 +88,7 @@ namespace ServerSite
             _repository.Issue.CreateIssue(issue);
 
             var issues = _repository.Issue.GetAllIssues(roomId);
-            await Clients.Group(roomId).SendAsync("IssuesListChanged");
+            await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
 
     }

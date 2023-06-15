@@ -17,6 +17,9 @@ export class RoomComponent implements OnInit {
   public didEveryoneVote = false;
   public issuesPopupOpen = false;
   public newIssuesClick = false;
+  public isLoginPopupOpen = false;
+  public isRegisterPopupOpen = false;
+  public isUserIssuePopupOpen = false;
   public readonly estimates = ["0", "0,5", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
 
   private readonly unsubscribe$ = new Subject<void>();
@@ -24,6 +27,8 @@ export class RoomComponent implements OnInit {
   public roomId: string;
   public roomName = "";
   public issueName = "";
+  public login = "";
+  public password = "";
   public link = window.location.href;
   public roomModel: any;
   public averageEstimate = null;
@@ -93,6 +98,7 @@ export class RoomComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(message => {
         console.log("createNewIssues$");
+        console.log(message);
         this.issuesList = message;
     });
 
@@ -166,8 +172,19 @@ export class RoomComponent implements OnInit {
     this.newIssuesClick = false;
   }
 
-  public createNewIssues(): void {
+  public async createNewIssues(): Promise<void> {
+    await this.signalRService.createNewIssues(this.roomId, this.roomName);
     this.newIssuesClick = true;
+  }
+
+  public toRegisterPopup(): void {
+    this.isLoginPopupOpen = false;
+    this.isRegisterPopupOpen = true;
+  }
+
+  public toLoginPopup(): void {
+    this.isLoginPopupOpen = true;
+    this.isRegisterPopupOpen = false;
   }
 
 }
