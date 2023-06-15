@@ -15,7 +15,8 @@ namespace Repository
         private IUserRepository _userRepository;
         private IRoomRepository _roomRepository;
         private IRoomUserRepository _roomUserRepository;
-        private IIssueRepository _objectiveRepository;
+        private IIssueRepository _issueRepository;
+        private IAuthorizedUserIssue _authorizedUserIssue;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -58,10 +59,21 @@ namespace Repository
         {
             get
             {
-                if (_objectiveRepository == null)
-                    _objectiveRepository = new IssueRepository(_repositoryContext);
+                if (_issueRepository == null)
+                    _issueRepository = new IssueRepository(_repositoryContext);
 
-                return _objectiveRepository;
+                return _issueRepository;
+            }
+        }
+
+        public IAuthorizedUserIssue authorizedUserIssue
+        {
+            get
+            {
+                if (_authorizedUserIssue == null)
+                    _authorizedUserIssue = new AuthorizedUserIssuesRepository(_repositoryContext);
+
+                return _authorizedUserIssue;
             }
         }
 

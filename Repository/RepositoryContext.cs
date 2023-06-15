@@ -23,5 +23,6 @@ namespace Entities
 
         public DbSet<Issue> Issue { get; set; }
 
+        public DbSet<AuthorizedUserIssue> AuthorizedUserIssues { get; set; }
     }
 }
