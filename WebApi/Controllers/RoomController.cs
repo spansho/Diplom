@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using ServerSite.DTO;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ServerSite.Controllers
@@ -16,13 +18,14 @@ namespace ServerSite.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        //private readonly IAuthenticationManager _authManager;
+        private readonly IAuthenticationManager _authManager;
         private readonly IMapper _mapper;
 
-        public RoomController(IRepositoryManager repository, IMapper mapper)
+        public RoomController(IRepositoryManager repository, IMapper mapper, IAuthenticationManager manager)
         {
             _repository = repository;
             _mapper = mapper;
+            _authManager=manager;
         }
 
 
@@ -48,7 +51,22 @@ namespace ServerSite.Controllers
             return Ok(new {Link= roomLink ,Id=guid,Users=users});
         }
 
-       
+        
+        [HttpGet("get"),Authorize]
+        public async Task<IActionResult> GetIssues([FromBody]UserDto user)
+        {
+            var userz = _repository.User.GetUser(user.Mail,true);
+            var userVotedIssues= _repository.authorizedUserIssue.GetAllUserIssue(userz.Username);
+            List<IssueWithEstimation> issues = new List<IssueWithEstimation>();
+            foreach(var votedIssue in userVotedIssues)
+            {
+                IssueWithEstimation issueWithEstimation = (IssueWithEstimation)_repository.Issue.GetIssueById(votedIssue.IssueId);
+                issueWithEstimation.Estimation=votedIssue.Estimation;
+                issues.Add(issueWithEstimation);
+            }
+
+            return Ok(issues);
+        }
 
     }
 }

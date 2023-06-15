@@ -41,10 +41,8 @@ namespace ServerSite.Controllers
                 _repository.Save();
             }
 
-            var userz = _repository.User.GetUser(orderDto.Mail, true);
-            var token = await _authManager.CreateToken(userz.Id);
-  
-            return Ok(token);
+            return Ok();
+
         }
 
         [HttpGet("entrance")]
@@ -63,7 +61,10 @@ namespace ServerSite.Controllers
                 _repository.Save();
             }
 
-            return NoContent();
+            var userz = _repository.User.GetUser(orderDto.Mail, true);
+            var token = await _authManager.CreateToken(userz.Id);
+
+            return Ok(token);
         }
     }
 }
