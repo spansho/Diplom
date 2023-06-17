@@ -25,7 +25,7 @@ namespace Repository
 
         public IEnumerable<Issue> GetAllIssues(string id)
         {
-            return FindByCondition(x => x.RoomId.ToLower() == id.ToLower(), true);
+            return FindByCondition(x => x.RoomId.ToLower() == id.ToLower(), false);
         }
 
         public Issue GetIssueById(string id)
