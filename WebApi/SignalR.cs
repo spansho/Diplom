@@ -51,12 +51,11 @@ namespace ServerSite
             await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
         }
 
-        public async Task Voting(string estimate, string userId, string roomId, string token = "")
+        public async Task Voting(string estimate, string userId, string roomId,string issueId, string token = "")
         {
             if(token!=string.Empty)
             {
-                //хз как тут текущую задачу полоучить ну потом обсудим
-                AuthorizedUserIssue issue= new AuthorizedUserIssue() {UserId=Guid.Parse(userId),IssueId="хз что сюда ебануть",Estimation=int.Parse(estimate) };
+                AuthorizedUserIssue issue= new AuthorizedUserIssue() {UserId=Guid.Parse(userId),IssueId= issueId, Estimation=int.Parse(estimate) };
                 _repository.authorizedUserIssue.CreateAuthorizedUserIsse(issue);
             }    
             var roomUser = _repository.RoomUser.GetRoomUserById(userId);
@@ -81,7 +80,7 @@ namespace ServerSite
             if(!string.IsNullOrEmpty(issueId))
             {
                 var issue = _repository.Issue.GetIssueById(issueId);
-                issue.Estimation = int.Parse(estimation);
+                issue.Estimation = estimation;
             }
 
             _repository.Save();
@@ -90,7 +89,7 @@ namespace ServerSite
 
         public async Task CreateNewIssueAsync(string roomId, string name)
         {
-            var issue = new Issue { Name = name, Description = string.Empty, Priority = "PP-2", RoomId = roomId, Link = string.Empty, IssueId = Guid.NewGuid().ToString(), Estimation = 0, CreatingTime = DateTime.Now };
+            var issue = new Issue { Name = name, Description = string.Empty, Priority = "PP-2", RoomId = roomId, Link = string.Empty, IssueId = Guid.NewGuid().ToString(), Estimation = string.Empty, CreatingTime = DateTime.Now };
             _repository.Issue.CreateIssue(issue);
             _repository.Save();
 
