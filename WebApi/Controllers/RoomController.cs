@@ -32,7 +32,6 @@ namespace ServerSite.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateRoom()
         {
-            //TODO тут кароче добавить проверку на залогинен пользователь или нет
             Guid guid = Guid.NewGuid();
             string roomLink = "https://uberDuupperSait/room/"+ guid;
             Room room = new Room

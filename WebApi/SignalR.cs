@@ -92,6 +92,7 @@ namespace ServerSite
         {
             var issue = new Issue { Name = name, Description = string.Empty, Priority = "PP-2", RoomId = roomId, Link = string.Empty, IssueId = Guid.NewGuid().ToString(), Estimation = 0, CreatingTime = DateTime.Now };
             _repository.Issue.CreateIssue(issue);
+            _repository.Save();
 
             var issues = _repository.Issue.GetAllIssues(roomId);
             await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
