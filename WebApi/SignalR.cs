@@ -98,5 +98,15 @@ namespace ServerSite
             await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
         
+        public async Task UpdateIssue(string issueId,string name,string description,string priority,string link,string estimation)
+        {
+            var issue = _repository.Issue.GetIssueById(issueId);
+            issue.Description = description;
+            issue.Priority = priority;
+            issue.Link = link;
+            issue.Name = name;
+            issue.Estimation = int.Parse(estimation);
+            _repository.Save();
+        }
     }
 }
