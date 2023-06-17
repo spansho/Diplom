@@ -108,5 +108,12 @@ namespace ServerSite
             issue.Estimation = int.Parse(estimation);
             _repository.Save();
         }
+
+        public async Task DeleteIssue(string issueId)
+        {
+            var issue = _repository.Issue.GetIssueById(issueId);
+            _repository.Issue.DeleteIssue(issue);
+            _repository.Save();
+        }
     }
 }
