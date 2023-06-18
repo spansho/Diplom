@@ -33,7 +33,6 @@ namespace ServerSite.Controllers
                 User user = new User
                 {
                     Id = Guid.NewGuid(),
-                    Username = orderDto.Username,
                     Mail = orderDto.Mail,
                     Password = orderDto.password,
                 };
@@ -57,13 +56,12 @@ namespace ServerSite.Controllers
                 {
                     var userz = _repository.User.GetUser(userDto.Mail, true);
                     var token = await _authManager.CreateToken(userz.Id);
-
                     return Ok(token);
                 }
                
             }
+
             return BadRequest();
-            
         }
     }
 }
