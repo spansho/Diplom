@@ -35,17 +35,19 @@ namespace ServerSite.Controllers
                     Id = Guid.NewGuid(),
                     Username = orderDto.Username,
                     Mail = orderDto.Mail,
+                    Password = orderDto.password,
                 };
 
                 _repository.User.CreateUser(user);
                 _repository.Save();
+                return Ok();
             }
 
-            return Ok();
+            return BadRequest();
 
         }
 
-        [HttpGet("entrance")]
+        [HttpPost("entrance")]
         public async Task<IActionResult> EntranceUser([FromBody] UserDto userDto)
         {
             var user = _repository.User.GetUser(userDto.Mail, true);
