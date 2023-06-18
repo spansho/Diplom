@@ -13,7 +13,7 @@ namespace ServerUnitTest
         public void UserRepository_AddUser_ShouldBeAdded()
         {
             UserRepositoryStub stub= new UserRepositoryStub();
-            User user = new User { Id = Guid.NewGuid(), Mail = "zxc12312", Username = "Volodya" };
+            User user = new User { Id = Guid.NewGuid(), Mail = "zxc12312", };
             stub.CreateUser(user);
 
             var znachenie = stub.GetUser("zxc12312", false);
@@ -25,7 +25,7 @@ namespace ServerUnitTest
         public void UserRepository_DeleteUser_ShouldBeDeleted()
         {
             UserRepositoryStub stub = new UserRepositoryStub();
-            User user = new User { Id = Guid.NewGuid(), Mail = "zxc12312", Username = "Volodya" };
+            User user = new User { Id = Guid.NewGuid(), Mail = "zxc12312" };
             stub.CreateUser(user);
             stub.DeleteUser(user);
             var znachenie = stub.GetUser("zxc12312", false);
@@ -37,7 +37,7 @@ namespace ServerUnitTest
         public void UserRepository_GetUserByMail_ShouldBeGetted()
         {
             UserRepositoryStub stub = new UserRepositoryStub();
-            User user = new User { Id = Guid.NewGuid(), Mail = "zxc12312", Username = "Volodya" };
+            User user = new User { Id = Guid.NewGuid(), Mail = "zxc12312" };
             stub.CreateUser(user);
 
             var znachenie = stub.GetUser("zxc12312", false);
@@ -50,7 +50,7 @@ namespace ServerUnitTest
         {
             UserRepositoryStub stub = new UserRepositoryStub();
             Guid newGuid = Guid.NewGuid();
-            User user = new User { Id = newGuid, Mail = "zxc12312", Username = "Volodya" };
+            User user = new User { Id = newGuid, Mail = "zxc12312" };
             stub.CreateUser(user);
 
             var znachenie = stub.GetUserById(newGuid, false);

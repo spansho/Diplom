@@ -28,7 +28,8 @@ namespace ServerSite.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> CreateUser([FromBody] UserDto orderDto)
         {
-            if (_repository.User.GetUser(orderDto.Mail,true)== null)
+            var useros= _repository.User.GetUser(orderDto.Mail, true);
+            if (useros == null)
             {
                 User user = new User
                 {

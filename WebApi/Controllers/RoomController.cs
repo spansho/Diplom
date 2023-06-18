@@ -55,7 +55,7 @@ namespace ServerSite.Controllers
         public async Task<IActionResult> GetIssues([FromBody]UserDto user)
         {
             var userz = _repository.User.GetUser(user.Mail,true);
-            var userVotedIssues= _repository.authorizedUserIssue.GetAllUserIssue(userz.Username);
+            var userVotedIssues= _repository.authorizedUserIssue.GetAllUserIssue(userz.Id.ToString());
             List<IssueWithEstimation> issues = new List<IssueWithEstimation>();
             foreach(var votedIssue in userVotedIssues)
             {
