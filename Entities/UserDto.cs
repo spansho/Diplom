@@ -9,5 +9,7 @@ namespace Entities
         public string Mail { get; set; }
 
         public string Username { get; set; }
+
+        public string password { get; set; }
     }
 }

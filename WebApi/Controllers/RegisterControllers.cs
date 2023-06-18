@@ -46,25 +46,22 @@ namespace ServerSite.Controllers
         }
 
         [HttpGet("entrance")]
-        public async Task<IActionResult> EntranceUser([FromBody] UserDto orderDto)
+        public async Task<IActionResult> EntranceUser([FromBody] UserDto userDto)
         {
-            if (_repository.User.GetUser(orderDto.Mail, true) == null)
+            var user = _repository.User.GetUser(userDto.Mail, true);
+            if (user != null)
             {
-                User user = new User
+                if( user.Password==userDto.password)
                 {
-                    Id = Guid.NewGuid(),
-                    Username = orderDto.Username,
-                    Mail = orderDto.Mail,
-                };
+                    var userz = _repository.User.GetUser(userDto.Mail, true);
+                    var token = await _authManager.CreateToken(userz.Id);
 
-                _repository.User.CreateUser(user);
-                _repository.Save();
+                    return Ok(token);
+                }
+               
             }
-
-            var userz = _repository.User.GetUser(orderDto.Mail, true);
-            var token = await _authManager.CreateToken(userz.Id);
-
-            return Ok(token);
+            return BadRequest();
+            
         }
     }
 }
