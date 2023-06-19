@@ -112,10 +112,32 @@ export class SignalRService {
       });
   };
 
-  public async createNewIssues(roomId: string, issueName: string) {
+  public async createNewIssue(roomId: string, issueName: string) {
     await this.hubConnection.invoke("CreateNewIssueAsync", roomId, issueName)
       .then((data: any) => {
         console.log("CreateNewIssueAsync");
+        console.log(data);
+      })
+      .catch(function (err) {
+          return console.error(err.toString());
+      });
+  };
+
+  public async updateIssue(roomId: string, issueId: string, name: string, description: string, priority: string, link: string, estimation: string) {
+    await this.hubConnection.invoke("UpdateIssue", roomId, issueId, name, description, priority, link, estimation.toString())
+      .then((data: any) => {
+        console.log("UpdateIssue");
+        console.log(data);
+      })
+      .catch(function (err) {
+          return console.error(err.toString());
+      });
+  };
+
+  public async deleteIssue(roomId: string, issueId: string) {
+    await this.hubConnection.invoke("DeleteIssue", roomId, issueId)
+      .then((data: any) => {
+        console.log("DeleteIssue");
         console.log(data);
       })
       .catch(function (err) {

@@ -5,6 +5,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from "rxjs";
 import { UserEstimate } from '../models/user-estimate.model';
+import { ApiClient } from '../services/api.client';
 
 @Component({
   selector: 'room',
@@ -20,6 +21,7 @@ export class RoomComponent implements OnInit {
   public isLoginPopupOpen = false;
   public isRegisterPopupOpen = false;
   public isUserIssuePopupOpen = false;
+  public isSelectedIssuePopupOpen = false;
   public readonly estimates = ["0", "0,5", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
 
   private readonly unsubscribe$ = new Subject<void>();
@@ -34,11 +36,14 @@ export class RoomComponent implements OnInit {
   public averageEstimate = null;
   public selectedEstimate = "";
   public issuesList: any;
+  public userIssuesList: any;
+  public selectedIssue: any; // то каторое открываеться в попапе
 
   constructor(
     public readonly signalRService: SignalRService,
     protected readonly activeRoute: ActivatedRoute,
-    private readonly clipboard: Clipboard
+    private readonly clipboard: Clipboard,
+    private readonly apiClient: ApiClient
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -173,8 +178,8 @@ export class RoomComponent implements OnInit {
   }
 
   public async createNewIssues(): Promise<void> {
-    await this.signalRService.createNewIssues(this.roomId, this.roomName);
-    this.newIssuesClick = true;
+    await this.signalRService.createNewIssue(this.roomId, this.issueName);
+    this.newIssuesClick = false
   }
 
   public toRegisterPopup(): void {
@@ -187,11 +192,66 @@ export class RoomComponent implements OnInit {
     this.isRegisterPopupOpen = false;
   }
 
-}
+  public openSelectedIssuePopup(issue: any): void {
+    this.selectedIssue = issue;
+    this.isSelectedIssuePopupOpen = true;
+  }
 
-class UserModal {
-  id: string;
-  name: string;
-  estimation: number | null;
-  observer: boolean;
+  public async signUp(): Promise<void> {
+    const result = await this.apiClient.post("register/register", {mail: this.login, password: this.password});
+    console.log(result);
+    alert("Registration was successful");
+    this.toLoginPopup();
+  }
+
+  public async signIn(): Promise<void> {
+    const result = await this.apiClient.post("register/entrance", {mail: this.login, password: this.password});
+    localStorage.setItem('auth_token', result.token);
+    alert("Registration was successful");
+    this.isLoginPopupOpen = false;
+    await this.userIssuePopupOpen();
+  }
+
+  public async userIssuePopupOpen(): Promise<void> {
+    // await this.getUserIssuesList();
+    this.isUserIssuePopupOpen = true;
+  }
+
+  public get isLogin(): boolean {
+    return (localStorage.getItem('auth_token') !== null);
+  }
+
+  public async getUserIssuesList(): Promise<void> {
+    try {
+      const result = await this.apiClient.post("Room/get", {mail: this.login, password: this.password}, true);
+      console.log(result);
+    } catch {
+      localStorage.removeItem('auth_token');
+    }
+  }
+  
+  public logoutClick(): void {
+    localStorage.removeItem('auth_token');
+    this.isUserIssuePopupOpen = false;
+  }
+
+  public async updateIssue(issue: any): Promise<void> {
+    await this.signalRService.updateIssue(this.roomId, issue.issueId, issue.name, issue.description, issue.priority, issue.link, issue.estimation);
+  }
+
+  public async deleteIssue(issue: any): Promise<void> {
+    await this.signalRService.deleteIssue(this.roomId, issue.issueId);
+  }
+
+  public async deleteSelectedIssue(): Promise<void> {
+    await this.deleteIssue(this.selectedIssue);
+    this.selectedIssue = null;
+    this.isSelectedIssuePopupOpen = false;
+  }
+
+  public async closeSelectedIssuePopup(): Promise<void> {
+    await this.updateIssue(this.selectedIssue);
+    this.isSelectedIssuePopupOpen = false;
+  }
+
 }

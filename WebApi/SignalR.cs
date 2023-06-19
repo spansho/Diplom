@@ -33,6 +33,8 @@ namespace ServerSite
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             await Clients.Caller.SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, roomId) });
             await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
+            var issues = _repository.Issue.GetAllIssues(roomId);
+            await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
 
         public async Task Disconeconect(string message, string roomId)
@@ -98,7 +100,7 @@ namespace ServerSite
             await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
         
-        public async Task UpdateIssue(string issueId,string name,string description,string priority,string link,string estimation)
+        public async Task UpdateIssue(string roomId, string issueId, string name, string description, string priority, string link, string estimation)
         {
             var issue = _repository.Issue.GetIssueById(issueId);
             issue.Description = description;
@@ -107,13 +109,19 @@ namespace ServerSite
             issue.Name = name;
             issue.Estimation = int.Parse(estimation);
             _repository.Save();
+
+            var issues = _repository.Issue.GetAllIssues(roomId);
+            await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
 
-        public async Task DeleteIssue(string issueId)
+        public async Task DeleteIssue(string roomId, string issueId)
         {
             var issue = _repository.Issue.GetIssueById(issueId);
             _repository.Issue.DeleteIssue(issue);
             _repository.Save();
+
+            var issues = _repository.Issue.GetAllIssues(roomId);
+            await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
     }
 }

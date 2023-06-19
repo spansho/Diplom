@@ -14,13 +14,23 @@ export class ApiClient {
     ) {
     }
 
-    public post(url: string, data: any, silent?: boolean): Promise<any> {
-        const observable = this.http.post(`${this.apiRoot}/${url}`, JSON.stringify(data), { headers: this.getHeaders(), observe: "response", withCredentials: this.getCredentialsOption() });
+    public get(url: string, isAuth: boolean = false, silent?: boolean, full: boolean = false): Promise<any> {
+        const observable = this.http.get(`${this.apiRoot}/${url}`, { headers: this.getHeaders(isAuth), observe: "response", withCredentials: this.getCredentialsOption() });
+        return this.subscribe(observable, url, silent, full);
+    }
+
+    public post(url: string, data: any, isAuth: boolean = false, silent?: boolean): Promise<any> {
+        const observable = this.http.post(`${this.apiRoot}/${url}`, JSON.stringify(data), { headers: this.getHeaders(isAuth), observe: "response", withCredentials: this.getCredentialsOption() });
         return this.subscribe(observable, url, silent);
     }
 
-    protected getHeaders(): HttpHeaders {
-        return new HttpHeaders({ "content-type": "application/json", "cache-control": "no-cache" });
+    protected getHeaders(isAuth: boolean = false): HttpHeaders {
+        var httpHeaders = new HttpHeaders({ "content-type": "application/json", "cache-control": "no-cache" });
+        if (isAuth) {
+            httpHeaders  = new HttpHeaders({ "content-type": "application/json", "cache-control": "no-cache",  "Authorization": "Bearer " + localStorage.getItem('auth_token')});
+        }
+
+        return httpHeaders;
     }
 
     protected getCredentialsOption(): boolean | undefined {
@@ -48,7 +58,11 @@ export class ApiClient {
                         } else {
                             resolve(r.error || null);
                         }
-                    } 
+                    }
+                    if (r.status === 401) {
+                        localStorage.removeItem('auth_token');
+                        resolve({ code: "401" });
+                    }
                 }
             });
         });

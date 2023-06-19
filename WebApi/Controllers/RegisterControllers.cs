@@ -26,9 +26,9 @@ namespace ServerSite.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> CreateUser([FromBody] UserDto orderDto)
+        public IActionResult CreateUser([FromBody] UserDto orderDto)
         {
-            var useros= _repository.User.GetUser(orderDto.Mail, true);
+            var useros = _repository.User.GetUser(orderDto.Mail, true);
             if (useros == null)
             {
                 User user = new User
@@ -48,7 +48,7 @@ namespace ServerSite.Controllers
         }
 
         [HttpPost("entrance")]
-        public async Task<IActionResult> EntranceUser([FromBody] UserDto userDto)
+        public async Task<object> EntranceUser([FromBody] UserDto userDto)
         {
             var user = _repository.User.GetUser(userDto.Mail, true);
             if (user != null)
@@ -57,7 +57,7 @@ namespace ServerSite.Controllers
                 {
                     var userz = _repository.User.GetUser(userDto.Mail, true);
                     var token = await _authManager.CreateToken(userz.Id);
-                    return Ok(token);
+                    return new {token};
                 }
                
             }

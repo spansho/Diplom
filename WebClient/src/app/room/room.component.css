@@ -1,3 +1,76 @@
+.issue-name-width {
+    width: 35%;
+}
+
+.w-fit-content {
+    width: fit-content !important;
+}
+
+.issue-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mini-btn {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mini-btn.right {
+    margin-right: 8px;
+}
+
+.issue-list .row-1 {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+.issue-list .row-2 {
+    color: #1a2935;
+    font-size: 1.6rem;
+    line-height: 1.45em;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    word-break: break-word;
+}
+
+.issue-list .row-3 {
+    align-items: center;
+    display: flex;
+    height: 4.8rem;
+    justify-content: space-between;
+    margin-top: 1.6rem;
+}
+
+.issue-card button {
+    width: fit-content;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.issue-list *:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.issue-card {
+    background-color: #D8C3A5;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(26,41,53,.24);
+    cursor: pointer;
+    display: block;
+    padding: 2.4rem 1.6rem 1.6rem;
+    position: relative;
+    width: 100%;
+}
+
 .vwvh-80 {
     width: 80vw !important;
     height: 80vh !important;
@@ -431,8 +504,8 @@ button {
     justify-content: center;
     top: 0px;
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 100;
 }
@@ -469,8 +542,8 @@ button {
 
 .round-btn {
     border-radius: 100px;
-    height: 28px;
-    width: 28px;
+    height: 35px;
+    width: 35px;
     display: flex;
     align-items: center;
     justify-content: center;

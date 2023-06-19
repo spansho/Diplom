@@ -60,7 +60,7 @@ namespace Repository
                 audience: jwtSettings.GetSection("validAudience").Value,
                 claims: claims,
                 expires:
-                DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),signingCredentials: signingCredentials);
+                DateTime.Now.AddDays(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),signingCredentials: signingCredentials);
            
             return tokenOptions;
         }

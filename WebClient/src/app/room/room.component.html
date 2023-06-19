@@ -23,9 +23,9 @@
         </button>
     </div>
     <div class="body">
-        <a class="user-name" (click)="isUserIssuePopupOpen = true">
+        <a class="user-name" (click)="isLogin ? userIssuePopupOpen() : isLoginPopupOpen = true">
             <svg width="28" height="28" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 4c2.2 0 4 2.2 4 5s-1.8 5-4 5-4-2.2-4-5 1.8-5 4-5zm6.6 15.5C16.9 21 14.5 22 12 22s-4.9-1-6.6-2.5c-.4-.4-.5-1-.1-1.4 1.1-1.3 2.6-2.2 4.2-2.7.8.4 1.6.6 2.5.6s1.7-.2 2.5-.6c1.7.5 3.1 1.4 4.2 2.7.4.4.4 1-.1 1.4z" fill="#E98074" class="fill-000000"></path></svg>
-            <span>{{this.roomModel?.name}} Qwert Asdf</span>
+            <span>{{this.roomModel?.name}}</span>
         </a>
         <a *ngIf="false" class="invite-players-link" href="">Invite players</a>
         <div class="card card-2" *ngIf="roomModel?.visitors?.length > 1">
@@ -161,9 +161,25 @@
         <div class="sidebar-body">
             <div class="sidebar-body-content">
                 <ul class="issue-list">
-
+                    <li *ngFor="let issue of issuesList" class="issue-card" (click)="openSelectedIssuePopup(issue)">
+                        <div class="row-1">
+                            <span>{{issue?.priority}}</span>
+                            <button (click)="deleteIssue(issue); $event.stopPropagation()">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 22C5.44772 22 5 21.5523 5 21V8H3V6H8V3C8 2.44772 8.44772 2 9 2H15C15.5523 2 16 2.44772 16 3V6H21V8H19V21C19 21.5523 18.5523 22 18 22H6ZM14 4H10V6H14V4ZM17 8H9H7V20H17V8ZM11 18V10H9V18H11ZM15 18V10H13V18H15Z" fill="currentColor"></path></svg>
+                            </button>
+                        </div>
+                        <div class="row-2">
+                            {{issue?.name}}
+                        </div>
+                        <div class="row-3">
+                            <button>
+                                Evaluate it
+                            </button>
+                            <button>{{issue?.estimation}}</button>
+                        </div>
+                    </li>
                 </ul>
-                <div *ngIf="!newIssuesClick" class="new-issue" (click)="createNewIssues()">
+                <div *ngIf="!newIssuesClick" class="new-issue" (click)="this.newIssuesClick = true;">
                     <button class="new-issue-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C11.4477 2 11 2.44772 11 3V11H3C2.44772 11 2 11.4477 2 12C2 12.5523 2.44772 13 3 13H11V21C11 21.5523 11.4477 22 12 22C12.5523 22 13 21.5523 13 21V13H21C21.5523 13 22 12.5523 22 12C22 11.4477 21.5523 11 21 11H13V3C13 2.44772 12.5523 2 12 2Z" fill="currentColor"></path></svg>
                         <span>Add an issue</span>
@@ -175,7 +191,7 @@
                         <button class="new-issue-btn-close" (click)="newIssuesClick = false">
                             <span>Cancel</span>
                         </button>
-                        <button class="new-issue-btn-save" (click)="newIssuesClick = false">
+                        <button class="new-issue-btn-save" (click)="createNewIssues()">
                             <span>Save</span>
                         </button>
                     </div>
@@ -188,30 +204,32 @@
 <div *ngIf="isLoginPopupOpen" class="reg-confirm">
     <div class="reg-pop-up">
         <div class="pop-up-header">
-            <button class="pop-up-btn round-btn"
+            <button type="input" class="pop-up-btn round-btn"
                 (click)="isLoginPopupOpen = false"
             >
             <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.92898 7.92893C7.53845 8.31946 7.53845 8.95262 7.92898 9.34315L13.5858 15L7.92898 20.6569C7.53845 21.0474 7.53845 21.6805 7.92898 22.0711C8.3195 22.4616 8.95267 22.4616 9.34319 22.0711L15 16.4142L20.6569 22.0711C21.0474 22.4616 21.6806 22.4616 22.0711 22.0711C22.4616 21.6805 22.4616 21.0474 22.0711 20.6569L16.4143 15L22.0711 9.34315C22.4616 8.95262 22.4616 8.31946 22.0711 7.92893C21.6806 7.53841 21.0474 7.53841 20.6569 7.92893L15 13.5858L9.34319 7.92893C8.95267 7.53841 8.3195 7.53841 7.92898 7.92893Z" fill="currentColor"></path></svg>
             </button>
         </div>
         <p class="section-name pop-up-text font-size-20">Sign in to be able to track the results of the task evaluation</p>
-        <div>
-            <span>Email</span>
-            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
-        </div>
-        <div>
-            <span>Password</span>
-            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
-        </div>
-        <div class="pop-up-footer">
-            <button class="btn pop-up-btn" (click)="closeNamePopUp()" [disabled]="roomName === ''">
-                Sign In
-            </button>
-            <span>To Sign Up, click 👇</span>
-            <button class="btn pop-up-btn" (click)="toRegisterPopup()" [disabled]="roomName === ''">
-                Sign Up
-            </button>
-        </div>
+        <form (submit)="signIn()">
+            <div>
+                <span>Email</span>
+                <input type="email" name="email" required="true" id="Email-1" placeholder="Email" value="{{ login }}" [(ngModel)]="login">
+            </div>
+            <div>
+                <span>Password</span>
+                <input type="password" name="password" required="true" id="Password-1" placeholder="Password" value="{{ password }}" [(ngModel)]="password">
+            </div>
+            <div class="pop-up-footer">
+                <button type="submit" name="submit" class="btn pop-up-btn" [disabled]="login === '' && password === ''">
+                    Sign In
+                </button>
+                <span>To Sign Up, click 👇</span>
+                <button class="btn pop-up-btn" (click)="toRegisterPopup()" [disabled]="roomName === ''">
+                    Sign Up
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -225,25 +243,30 @@
             </button>
         </div>
         <p class="section-name pop-up-text font-size-20">Sign up to be able to track the results of the task evaluation</p>
-        <div>
-            <span>Email</span>
-            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
-        </div>
-        <div>
-            <span>Password</span>
-            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
-        </div>
-        <div class="pop-up-footer">
-            <button class="btn pop-up-btn" (click)="toLoginPopup()" [disabled]="roomName === ''">
-                Sign Up
-            </button>
-        </div>
+        <form (submit)="signUp()">
+            <div>
+                <span>Email</span>
+                <input type="email" name="email" required="true" id="Email-2" placeholder="Email" value="{{ login }}" [(ngModel)]="login">
+            </div>
+            <div>
+                <span>Password</span>
+                <input type="password" name="password" required="true" id="Password-2" placeholder="Password" value="{{ password }}" [(ngModel)]="password">
+            </div>
+            <div class="pop-up-footer">
+                <button type="submit" name="submit" class="btn pop-up-btn" [disabled]="login === '' && password === ''">
+                    Sign Up
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 <div *ngIf="isUserIssuePopupOpen" class="reg-confirm">
     <div class="reg-pop-up vwvh-80">
         <div class="pop-up-header">
+            <button class="mini-btn right w-fit-content" (click)="logoutClick()">
+                Logout
+            </button>
             <button class="pop-up-btn round-btn"
                 (click)="isUserIssuePopupOpen = false"
             >
@@ -251,18 +274,77 @@
             </button>
         </div>
         <p class="section-name pop-up-text">All your estimated tasks</p>
-        <div>
-            <span>Email</span>
-            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
-        </div>
-        <div>
-            <span>Password</span>
-            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ roomName }}" [(ngModel)]="roomName">
-        </div>
-        <div class="pop-up-footer">
-            <button class="btn pop-up-btn" (click)="toLoginPopup()" [disabled]="roomName === ''">
-                Sign Up
+        <table class="issues-table">
+            <thead>
+                <tr>
+                    <th class="issue-name-width">
+                        Name
+                    </th>
+                    <th>
+                        Estimation
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let issue of issuesList;">
+                    <td>
+                        {{issue.name}}
+                    </td>
+                    <td>
+                        {{issue.estimation}}
+                    </td>
+                    <td>
+                        {{issue.priority}}
+                    </td>
+                    <td>
+                        {{issue.creatingTime}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="isSelectedIssuePopupOpen" class="reg-confirm">
+    <div class="reg-pop-up vwvh-80">
+        <div class="pop-up-header">
+            <button class="mini-btn right" (click)="deleteSelectedIssue()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 22C5.44772 22 5 21.5523 5 21V8H3V6H8V3C8 2.44772 8.44772 2 9 2H15C15.5523 2 16 2.44772 16 3V6H21V8H19V21C19 21.5523 18.5523 22 18 22H6ZM14 4H10V6H14V4ZM17 8H9H7V20H17V8ZM11 18V10H9V18H11ZM15 18V10H13V18H15Z" fill="currentColor"></path></svg>
             </button>
+            <button class="pop-up-btn round-btn"
+                (click)="closeSelectedIssuePopup()"
+            >
+                <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.92898 7.92893C7.53845 8.31946 7.53845 8.95262 7.92898 9.34315L13.5858 15L7.92898 20.6569C7.53845 21.0474 7.53845 21.6805 7.92898 22.0711C8.3195 22.4616 8.95267 22.4616 9.34319 22.0711L15 16.4142L20.6569 22.0711C21.0474 22.4616 21.6806 22.4616 22.0711 22.0711C22.4616 21.6805 22.4616 21.0474 22.0711 20.6569L16.4143 15L22.0711 9.34315C22.4616 8.95262 22.4616 8.31946 22.0711 7.92893C21.6806 7.53841 21.0474 7.53841 20.6569 7.92893L15 13.5858L9.34319 7.92893C8.95267 7.53841 8.3195 7.53841 7.92898 7.92893Z" fill="currentColor"></path></svg>
+            </button>
+        </div>
+        <p class="section-name pop-up-text">All your estimated tasks</p>
+        <div>
+            <span>Priority</span>
+            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ selectedIssue.priority }}" [(ngModel)]="selectedIssue.priority">
+        </div>
+        <div>
+            <span>Name</span>
+            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ selectedIssue.name }}" [(ngModel)]="selectedIssue.name">
+        </div>
+        <div>
+            <span>Link</span>
+            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ selectedIssue.link }}" [(ngModel)]="selectedIssue.link">
+        </div>
+        <div>
+            <span>Description</span>
+            <input type="text" name="room-num" id="room-num" placeholder="Your display name" value="{{ selectedIssue.description }}" [(ngModel)]="selectedIssue.description">
+        </div>
+        <div class="issue-bottom">
+            <button class="w-fit-content">
+                Evaluate it
+            </button>
+            <button class="w-fit-content">{{ selectedIssue?.estimation }}</button>
         </div>
     </div>
 </div>
