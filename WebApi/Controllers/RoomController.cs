@@ -51,7 +51,7 @@ namespace ServerSite.Controllers
         }
 
         
-        [HttpGet("get"),Authorize]
+        [HttpPost("get"),Authorize]
         public async Task<IActionResult> GetIssues([FromBody]UserDto user)
         {
             var userz = _repository.User.GetUser(user.Mail,true);
