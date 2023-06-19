@@ -23,10 +23,10 @@ namespace Repository
             _configuration = configuration;
         }
 
-        public async Task<string> CreateToken(Guid id)
+        public async Task<string> CreateToken(Guid id,string email)
         {
             var signingCredentials = GetSigningCredentials();
-            var claims = await GetClaims(id);
+            var claims = await GetClaims(id,email);
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
            
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
@@ -40,11 +40,12 @@ namespace Repository
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<List<Claim>> GetClaims(Guid _id)
+        private async Task<List<Claim>> GetClaims(Guid _id,string email)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, Convert.ToString(_id))
+                new Claim(ClaimTypes.Name, Convert.ToString(_id)),
+                new Claim(ClaimTypes.Email, email)
             };
                
                  claims.Add(new Claim(ClaimTypes.Role, "user"));
