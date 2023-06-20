@@ -6,6 +6,6 @@ namespace Contracts
 {
     public interface IAuthenticationManager
     {
-        Task<string> CreateToken(Guid id);
+        Task<string> CreateToken(Guid id,string email);
     }
 }

@@ -24,7 +24,21 @@ namespace WebApi.Controllers
             }
         }
 
-        
+        protected string Email
+        {
+            get
+            {
+                var value = User.Claims
+                    .FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+                if (value != null)
+                    return value;
+
+                throw new Exception(" Undefined User");
+
+            }
+        }
+
+
     }
 
        

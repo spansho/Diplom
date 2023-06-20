@@ -10,12 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using WebApi.Controllers;
 
 namespace ServerSite.Controllers
 {
     [Route("api/Room")]
     [ApiController]
-    public class RoomController : ControllerBase
+    public class RoomController : BaseController
     {
         private readonly IRepositoryManager _repository;
         private readonly IAuthenticationManager _authManager;
@@ -54,7 +55,7 @@ namespace ServerSite.Controllers
         [HttpPost("get"),Authorize]
         public async Task<IActionResult> GetIssues([FromBody]UserDto user)
         {
-            var userz = _repository.User.GetUser(user.Mail,true);
+            var userz = _repository.User.GetUser(Email,true);
             var userVotedIssues= _repository.authorizedUserIssue.GetAllUserIssue(userz.Id.ToString());
             List<IssueWithEstimation> issues = new List<IssueWithEstimation>();
             foreach(var votedIssue in userVotedIssues)

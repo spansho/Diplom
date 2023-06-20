@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using Entities.Models;
 using System;
 using Entities;
+using WebApi.Controllers;
 
 namespace ServerSite.Controllers
 {
     [Route("api/register")]
     [ApiController]
-    public class RegisterControllers : ControllerBase
+    public class RegisterControllers : BaseController
     {
         private readonly IRepositoryManager _repository;
         private readonly IAuthenticationManager _authManager;
@@ -56,10 +57,11 @@ namespace ServerSite.Controllers
                 if( user.Password==userDto.password)
                 {
                     var userz = _repository.User.GetUser(userDto.Mail, true);
-                    var token = await _authManager.CreateToken(userz.Id);
-                    return new {token};
+                    var token = await _authManager.CreateToken(userz.Id,userDto.Mail);
+                    return Ok(token);
                 }
                
+
             }
 
             return BadRequest();
