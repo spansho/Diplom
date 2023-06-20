@@ -53,14 +53,14 @@ namespace ServerSite
             await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
         }
 
-        public async Task Voting(string estimate, string userId, string roomId, string token = "")
+        public async Task Voting(string estimate, string userId, string roomId, string token, string issueId)
         {
-            if(token!=string.Empty)
+            if (token != string.Empty && issueId != string.Empty && userId != string.Empty)
             {
-                //хз как тут текущую задачу полоучить ну потом обсудим
-                AuthorizedUserIssue issue= new AuthorizedUserIssue() {UserId=Guid.Parse(userId),IssueId="хз что сюда ебануть",Estimation=int.Parse(estimate) };
+                AuthorizedUserIssue issue = new AuthorizedUserIssue {UserId = Guid.Parse(userId), IssueId = issueId, Estimation = 10};
                 _repository.authorizedUserIssue.CreateAuthorizedUserIsse(issue);
-            }    
+            }
+
             var roomUser = _repository.RoomUser.GetRoomUserById(userId);
             roomUser.Estimate = estimate;
             _repository.Save();
@@ -74,6 +74,7 @@ namespace ServerSite
             {
                 user.Estimate = string.Empty;
             }
+
             await Clients.Group(roomId).SendAsync("StartNewVoting", allUsers);
             _repository.Save();
         }

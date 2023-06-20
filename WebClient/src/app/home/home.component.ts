@@ -9,6 +9,13 @@ import { State } from '../state';
 })
 export class HomeComponent implements OnInit {
   public roomId = "";
+  public login = "";
+  public password = "";
+
+  public isLoginPopupOpen = false;
+  public isRegisterPopupOpen = false;
+  public isUserIssuePopupOpen = false;
+
   constructor(
     private readonly apiClient: ApiClient
   ) {
@@ -26,10 +33,58 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  public toRegisterPopup(): void {
+    this.isLoginPopupOpen = false;
+    this.isRegisterPopupOpen = true;
+  }
+
+  public toLoginPopup(): void {
+    this.isLoginPopupOpen = true;
+    this.isRegisterPopupOpen = false;
+  }
+
   public createNewRoom(): void {
     this.apiClient.post("Room/create", {}).then((data: any) => {
       window.location.href=`/room/${data.id}`;
     });
+  }
+
+  public async signUp(): Promise<void> {
+    const result = await this.apiClient.post("register/register", {mail: this.login, password: this.password});
+    console.log(result);
+    alert("Registration was successful");
+    this.toLoginPopup();
+  }
+
+  public async signIn(): Promise<void> {
+    const result = await this.apiClient.post("register/entrance", {mail: this.login, password: this.password});
+    localStorage.setItem('auth_token', result.token);
+    alert("Registration was successful");
+    this.isLoginPopupOpen = false;
+    await this.userIssuePopupOpen();
+  }
+
+  public async userIssuePopupOpen(): Promise<void> {
+    // await this.getUserIssuesList();
+    this.isUserIssuePopupOpen = true;
+  }
+
+  public get isLogin(): boolean {
+    return (localStorage.getItem('auth_token') !== null);
+  }
+
+  public async getUserIssuesList(): Promise<void> {
+    try {
+      const result = await this.apiClient.post("Room/get", {mail: this.login, password: this.password}, true);
+      console.log(result);
+    } catch {
+      localStorage.removeItem('auth_token');
+    }
+  }
+  
+  public logoutClick(): void {
+    localStorage.removeItem('auth_token');
+    this.isUserIssuePopupOpen = false;
   }
 
 }

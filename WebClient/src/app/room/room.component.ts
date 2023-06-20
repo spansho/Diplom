@@ -38,6 +38,7 @@ export class RoomComponent implements OnInit {
   public issuesList: any;
   public userIssuesList: any;
   public selectedIssue: any; // то каторое открываеться в попапе
+  public votingNowIssue = null; // то каторое оцениваеться сейчас
 
   constructor(
     public readonly signalRService: SignalRService,
@@ -149,7 +150,12 @@ export class RoomComponent implements OnInit {
     }
 
     const userEstimate = new UserEstimate(estimate, this.roomModel.userId);
-    await this.signalRService.sendEstimate(userEstimate, this.roomId);
+    if (this.isLogin && this.votingNowIssue != null) {
+      const token = localStorage.getItem('auth_token');
+      await this.signalRService.sendEstimate(userEstimate, this.roomId, token, this.votingNowIssue.issueId);
+    } else {
+      await this.signalRService.sendEstimate(userEstimate, this.roomId, "", "");
+    }
   }
 
   public async leaveRoom(): Promise<void> {
@@ -224,6 +230,7 @@ export class RoomComponent implements OnInit {
   public async getUserIssuesList(): Promise<void> {
     try {
       const result = await this.apiClient.post("Room/get", {mail: this.login, password: this.password}, true);
+      this.userIssuesList = result;
       console.log(result);
     } catch {
       localStorage.removeItem('auth_token');
@@ -252,6 +259,14 @@ export class RoomComponent implements OnInit {
   public async closeSelectedIssuePopup(): Promise<void> {
     await this.updateIssue(this.selectedIssue);
     this.isSelectedIssuePopupOpen = false;
+  }
+
+  public changeVotingThisIssues(issue: any) {
+    if (issue.issueId === this.votingNowIssue?.issueId) {
+      this.votingNowIssue = null;
+    } else {
+      this.votingNowIssue = issue;
+    }
   }
 
 }

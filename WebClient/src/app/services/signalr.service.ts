@@ -66,10 +66,10 @@ export class SignalRService {
       });
   };
 
-  public async sendEstimate(userEstimate: UserEstimate, roomName: string) {
+  public async sendEstimate(userEstimate: UserEstimate, roomName: string, token: string, issueId: string) {
     console.log(userEstimate);
     console.log(roomName);
-    await this.hubConnection.invoke("Voting", userEstimate.Estimate, userEstimate.Id, roomName)
+    await this.hubConnection.invoke("Voting", userEstimate.Estimate, userEstimate.Id, roomName, token, issueId)
       .then((data: any) => {
         console.log("sendEstimateOK");
         console.log(data);
