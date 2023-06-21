@@ -19,28 +19,32 @@ namespace ServerSite
             _repository = repository; 
         }
 
-        public async Task Conect(string name, string roomId)
+        public async Task Conect(string name, string roomId, string userId)
         {
             if (_repository.Room.GetRoomById(roomId) is null)
             {
                 await Clients.Caller.SendAsync("Receive", "Такой комнаты не существует");
             }
 
-            RoomUser roomUser = new RoomUser { Id = Context.ConnectionId, Name = name,isObserver = false, RoomId = roomId };
+            if (userId == string.Empty) {
+                userId = Guid.NewGuid().ToString();
+            }
+
+            RoomUser roomUser = new RoomUser { Id = userId, Name = name,isObserver = false, RoomId = roomId };
             var vakidze = _repository.Room.GetRoomById(roomId);
             _repository.RoomUser.CreateRoomUser(roomUser);
             _repository.Save();
-            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-            await Clients.Caller.SendAsync("Receive", new { UserId = Context.ConnectionId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, roomId) });
+            await Groups.AddToGroupAsync(userId, roomId);
+            await Clients.Caller.SendAsync("Receive", new { UserId = userId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, roomId) });
             await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
             var issues = _repository.Issue.GetAllIssues(roomId);
             await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
 
-        public async Task Disconeconect(string message, string roomId)
+        public async Task Disconeconect(string message, string roomId, string userId)
         {
-            _repository.RoomUser.DeleteRoomUser(Context.ConnectionId);
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+            _repository.RoomUser.DeleteRoomUser(userId);
+            await Groups.RemoveFromGroupAsync(userId, roomId);
             var room =_repository.Room.GetRoomById(roomId);
             room.NumberOfVisitorsIn--;
             if(room.NumberOfVisitorsIn == 0)

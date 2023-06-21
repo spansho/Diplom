@@ -39,6 +39,10 @@ namespace ServerSite.Controllers
                     Password = orderDto.password,
                 };
 
+                if (orderDto.UserId != string.Empty) {
+                    user.Id = Guid.Parse(orderDto.UserId);
+                }
+
                 _repository.User.CreateUser(user);
                 _repository.Save();
                 return Ok();
