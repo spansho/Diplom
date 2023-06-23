@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SignalRService } from '../services/signalr.service';
 import { State } from '../state';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -13,7 +13,7 @@ import { AuthUtil } from '../utils/auth.util';
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
   public isInvitePlayersPopUpOpen = false;
   public isNamePopUpOpen = false;
   public didEveryoneVote = false;
@@ -48,6 +48,11 @@ export class RoomComponent implements OnInit {
     private readonly apiClient: ApiClient
   ) { }
 
+  async ngOnDestroy(): Promise<void> {
+    console.log("ngOnDestroy");
+    await this.signalRService.disconeconectRoom(this.roomId, this.roomName, this.roomModel.userId);
+  }
+
   async ngOnInit(): Promise<void> {
     this.activeRoute.params
       .pipe(takeUntil(this.unsubscribe$))
@@ -58,12 +63,24 @@ export class RoomComponent implements OnInit {
        await this.signalRService.startConnection();
     }
 
-    this.openNamePopUp();
+    if (localStorage.getItem("roomId") === this.roomId) {
+      this.roomName = localStorage.getItem("roomName");
+      this.closeNamePopUp();
+    } else {
+      this.openNamePopUp();
+      localStorage.removeItem("roomId");
+      localStorage.setItem("roomId", this.roomId);
+    }
+
     this.signalRService.enterRoom$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(message => {
+        if (message) {
+          this.roomModel = message;
+          localStorage.removeItem("roomModelUserId");
+          localStorage.setItem("roomModelUserId", this.roomModel.userId);
+        }
         console.log("enterRoom$");
-        this.roomModel = message;
         console.log(this.roomModel);
       });
 
@@ -115,9 +132,14 @@ export class RoomComponent implements OnInit {
     };
     window.onmousemove = () => {
     };
+
+    window.onbeforeunload = async () => {
+      console.log("ngOnDestroy");
+      await this.signalRService.disconeconectRoom(this.roomId, this.roomName, this.roomModel.userId);
+    };
   }
 
-  public openHome(): void {
+  public async openHome(): Promise<void> {
     window.location.href="/";
   }
 
@@ -143,6 +165,9 @@ export class RoomComponent implements OnInit {
     } else {
       await this.signalRService.enterRoom(this.roomId, this.roomName);
     }
+
+    localStorage.removeItem("roomName");
+    localStorage.setItem("roomName", this.roomName);
   }
 
   public openNamePopUp(): void {
@@ -167,6 +192,9 @@ export class RoomComponent implements OnInit {
 
   public async leaveRoom(): Promise<void> {
     await this.signalRService.disconeconectRoom(this.roomId, this.roomName, this.roomModel.userId);
+    localStorage.removeItem("roomId");
+    localStorage.removeItem("roomName");
+    localStorage.removeItem("roomModelUserId");
     this.openHome();
   }
 

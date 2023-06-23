@@ -1,6 +1,6 @@
 <div class="room-page">
     <div class="header">
-        <div class="project-name-container" (click)="openHome()">
+        <div class="project-name-container" (click)="leaveRoom()">
             <svg class="project-name-icom" width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19.9663 31.8069L27.7913 35.7194L40.1988 9.59812L22.225 0.278748L19.8206 5.08625L17.7813 0.900623L-0.193115 10.22L11.5694 35.7056L19.9663 31.8069ZM22.775 1.97125L38.5513 10.1519L27.2088 34.0306L10.8388 25.8456L22.775 1.97125ZM17.2188 2.59937L19.1163 6.49437L9.16126 26.4044L18.5375 31.0925L12.18 34.0444L1.44313 10.78L17.2188 2.59937Z" fill="#8E8D8A"/>
                 <path d="M24.3084 3.90403L23.1904 3.34503L22.5655 4.59496L23.6835 5.15396L24.3084 3.90403Z" fill="#8E8D8A"/>
@@ -40,17 +40,17 @@
         </div>
         <div class="table-wrapper">
             <div class="left">
-                <div class="card card-5" *ngIf="roomModel?.visitors?.length > 4">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[4]?.estimate">
-                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[4]?.estimate }}</span>
-                    </div>
-                    <span class="card-name" [title]="roomModel?.visitors[4]?.name">{{ roomModel?.visitors[4]?.name }}</span>
-                </div>
                 <div class="card card-3" *ngIf="roomModel?.visitors?.length > 2">
                     <div class="card-body" [class.selected]="roomModel?.visitors[2]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[2]?.estimate }}</span>
                     </div>
                     <span class="card-name" [title]="roomModel?.visitors[2]?.name">{{ roomModel?.visitors[2]?.name }}</span>
+                </div>
+                <div class="card card-5" *ngIf="roomModel?.visitors?.length > 4">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[4]?.estimate">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[4]?.estimate }}</span>
+                    </div>
+                    <span class="card-name" [title]="roomModel?.visitors[4]?.name">{{ roomModel?.visitors[4]?.name }}</span>
                 </div>
                 <div class="card card-7" *ngIf="roomModel?.visitors?.length > 6">
                     <div class="card-body" [class.selected]="roomModel?.visitors[6]?.estimate">
@@ -72,12 +72,6 @@
                 </div>
             </div>
             <div class="right">
-                <div class="card card-8" *ngIf="roomModel?.visitors?.length > 7">
-                    <div class="card-body" [class.selected]="roomModel?.visitors[7]?.estimate">
-                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[7]?.estimate }}</span>
-                    </div>
-                    <span class="card-name" [title]="roomModel?.visitors[7]?.name">{{ roomModel?.visitors[7]?.name }}</span>
-                </div>
                 <div class="card card-4" *ngIf="roomModel?.visitors?.length > 3">
                     <div class="card-body" [class.selected]="roomModel?.visitors[3]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[3]?.estimate }}</span>
@@ -90,9 +84,15 @@
                     </div>
                     <span class="card-name" [title]="roomModel?.visitors[5]?.name">{{ roomModel?.visitors[5]?.name }}</span>
                 </div>
+                <div class="card card-8" *ngIf="roomModel?.visitors?.length > 7">
+                    <div class="card-body" [class.selected]="roomModel?.visitors[7]?.estimate">
+                        <span *ngIf="averageEstimate">{{ roomModel?.visitors[7]?.estimate }}</span>
+                    </div>
+                    <span class="card-name" [title]="roomModel?.visitors[7]?.name">{{ roomModel?.visitors[7]?.name }}</span>
+                </div>
             </div>
         </div>
-        <div class="card card-1" *ngIf="roomModel?.visitors?.length > 0">
+        <div class="card card-1" [class.no-margin]="roomModel?.visitors?.length > 6" *ngIf="roomModel?.visitors?.length > 0">
             <div class="card-body" [class.selected]="roomModel?.visitors[0]?.estimate">
                 <span *ngIf="averageEstimate">{{ roomModel?.visitors[0]?.estimate }}</span>
             </div>

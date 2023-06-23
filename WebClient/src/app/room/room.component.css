@@ -505,24 +505,28 @@ button {
     margin-top: 45px;
 }
 
+.card-1.no-margin {
+    margin-top: 0px !important;
+}
+
 .card-2 {
     margin-bottom: 20px;
 }
 
 .card-3 {
-    margin-right: 50px;
-}
-
-.card-4 {
-    margin-left: 50px;
-}
-
-.card-5 {
     margin-bottom: 25px;
 }
 
+.card-4 {
+    margin-bottom: 25px;
+}
+
+.card-5 {
+    margin-left: -50px;
+}
+
 .card-6 {
-    margin-top: 25px;
+    margin-left: 50px;
 }
 
 .card-7 {
@@ -530,7 +534,7 @@ button {
 }
 
 .card-8 {
-    margin-bottom: 25px;
+    margin-top: 25px;
 }
 
 .table-wrapper .left {
