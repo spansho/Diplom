@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiClient } from '../services/api.client';
-import { State } from '../state';
+import { AuthUtil } from '../utils/auth.util';
 
 @Component({
   selector: 'home',
@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
   }
 
   public enterRoomById(): void {
@@ -58,7 +57,9 @@ export class HomeComponent implements OnInit {
 
   public async signIn(): Promise<void> {
     const result = await this.apiClient.post("register/entrance", {mail: this.login, password: this.password});
+    console.log(result);
     localStorage.setItem('auth_token', result.token);
+    localStorage.setItem('auth_userId', result.id);
     alert("Registration was successful");
     this.isLoginPopupOpen = false;
     await this.userIssuePopupOpen();

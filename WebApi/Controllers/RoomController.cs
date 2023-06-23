@@ -57,12 +57,11 @@ namespace ServerSite.Controllers
         {
             var userz = _repository.User.GetUser(Email,true);
             var userVotedIssues= _repository.authorizedUserIssue.GetAllUserIssue(userz.Id.ToString());
-            List<IssueWithEstimation> issues = new List<IssueWithEstimation>();
+            List<Issue> issues = new List<Issue>();
             foreach(var votedIssue in userVotedIssues)
             {
-                IssueWithEstimation issueWithEstimation = (IssueWithEstimation)_repository.Issue.GetIssueById(votedIssue.IssueId);
-                issueWithEstimation.Estimation=votedIssue.Estimation;
-                issues.Add(issueWithEstimation);
+                Issue issue = _repository.Issue.GetIssueById(votedIssue.IssueId);
+                issues.Add(issue);
             }
 
             return Ok(issues);

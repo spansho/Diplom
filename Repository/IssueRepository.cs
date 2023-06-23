@@ -30,7 +30,7 @@ namespace Repository
 
         public Issue GetIssueById(string id)
         {
-            return FindByCondition(x => x.IssueId == id, true).FirstOrDefault();
+            return FindByCondition(x => x.IssueId.ToLower() == id.ToLower(), true).ToList().FirstOrDefault();
         }
 
         public void UpdateIssue(Issue  objective)

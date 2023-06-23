@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,9 +15,9 @@ namespace ServerSite
     public class VotingHub : Hub
     {
         private readonly IRepositoryManager _repository;
-        public VotingHub(IRepositoryManager repository) 
-        { 
-            _repository = repository; 
+        public VotingHub(IRepositoryManager repository)
+        {
+            _repository = repository;
         }
 
         public async Task Conect(string name, string roomId, string userId)
@@ -26,7 +27,7 @@ namespace ServerSite
                 await Clients.Caller.SendAsync("Receive", "Такой комнаты не существует");
             }
 
-            if (userId == string.Empty) {
+            if (userId == null || userId == string.Empty) {
                 userId = Guid.NewGuid().ToString();
             }
 
@@ -34,7 +35,7 @@ namespace ServerSite
             var vakidze = _repository.Room.GetRoomById(roomId);
             _repository.RoomUser.CreateRoomUser(roomUser);
             _repository.Save();
-            await Groups.AddToGroupAsync(userId, roomId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             await Clients.Caller.SendAsync("Receive", new { UserId = userId, Estimate = string.Empty, Name = name, isObserver = false, Visitors = _repository.RoomUser.GetAllRoomUsers(false, roomId) });
             await Clients.Group(roomId).SendAsync("ChangingEstimate", _repository.RoomUser.GetAllRoomUsers(false, roomId));
             var issues = _repository.Issue.GetAllIssues(roomId);
@@ -44,7 +45,7 @@ namespace ServerSite
         public async Task Disconeconect(string message, string roomId, string userId)
         {
             _repository.RoomUser.DeleteRoomUser(userId);
-            await Groups.RemoveFromGroupAsync(userId, roomId);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
             var room =_repository.Room.GetRoomById(roomId);
             room.NumberOfVisitorsIn--;
             if(room.NumberOfVisitorsIn == 0)
@@ -88,11 +89,15 @@ namespace ServerSite
             if(!string.IsNullOrEmpty(issueId))
             {
                 var issue = _repository.Issue.GetIssueById(issueId);
-                issue.Estimation = int.Parse(estimation);
+                var doubleEstimation = double.Parse(estimation, CultureInfo.InvariantCulture);
+                var intEstimation = (int)doubleEstimation;
+                issue.Estimation = intEstimation;
             }
 
             _repository.Save();
             await Clients.Group(roomId).SendAsync("RevealCards");
+            var issues = _repository.Issue.GetAllIssues(roomId);
+            await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
         }
 
         public async Task CreateNewIssueAsync(string roomId, string name)

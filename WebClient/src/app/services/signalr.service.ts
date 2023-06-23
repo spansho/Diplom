@@ -55,8 +55,8 @@ export class SignalRService {
     });
   };
 
-  public async enterRoom(roomId: string, roomName: string) {
-    await this.hubConnection.invoke("Conect", roomName, roomId)
+  public async enterRoom(roomId: string, roomName: string, userId = "") {
+    await this.hubConnection.invoke("Conect", roomName, roomId, userId)
       .then((data: any) => {
         console.log("enterRoomOK");
         console.log(data);
@@ -79,8 +79,8 @@ export class SignalRService {
       });
   };
 
-  public async disconeconectRoom(roomId: string, roomName: string) {
-    await this.hubConnection.invoke("Disconeconect", roomName, roomId)
+  public async disconeconectRoom(roomId: string, roomName: string, userId: string) {
+    await this.hubConnection.invoke("Disconeconect", roomName, roomId, userId)
       .then((data: any) => {
         console.log("disconeconectRoomOK");
         console.log(data);

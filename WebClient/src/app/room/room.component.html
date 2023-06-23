@@ -36,7 +36,7 @@
             <div class="card-body" [class.selected]="roomModel?.visitors[1]?.estimate">
                 <span *ngIf="averageEstimate">{{ roomModel?.visitors[1]?.estimate }}</span>
             </div>
-            <span class="card-name">{{ roomModel?.visitors[1]?.name }}</span>
+            <span class="card-name" [title]="roomModel?.visitors[1]?.name">{{ roomModel?.visitors[1]?.name }}</span>
         </div>
         <div class="table-wrapper">
             <div class="left">
@@ -44,19 +44,19 @@
                     <div class="card-body" [class.selected]="roomModel?.visitors[4]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[4]?.estimate }}</span>
                     </div>
-                    <span class="card-name">{{ roomModel?.visitors[4]?.name }}</span>
+                    <span class="card-name" [title]="roomModel?.visitors[4]?.name">{{ roomModel?.visitors[4]?.name }}</span>
                 </div>
                 <div class="card card-3" *ngIf="roomModel?.visitors?.length > 2">
                     <div class="card-body" [class.selected]="roomModel?.visitors[2]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[2]?.estimate }}</span>
                     </div>
-                    <span class="card-name">{{ roomModel?.visitors[2]?.name }}</span>
+                    <span class="card-name" [title]="roomModel?.visitors[2]?.name">{{ roomModel?.visitors[2]?.name }}</span>
                 </div>
                 <div class="card card-7" *ngIf="roomModel?.visitors?.length > 6">
                     <div class="card-body" [class.selected]="roomModel?.visitors[6]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[6]?.estimate }}</span>
                     </div>
-                    <span class="card-name">{{ roomModel?.visitors[6]?.name }}</span>
+                    <span class="card-name" [title]="roomModel?.visitors[6]?.name">{{ roomModel?.visitors[6]?.name }}</span>
                 </div>
             </div>
             <div class="table" [class.reveal]="didEveryoneVote">
@@ -76,19 +76,19 @@
                     <div class="card-body" [class.selected]="roomModel?.visitors[7]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[7]?.estimate }}</span>
                     </div>
-                    <span class="card-name">{{ roomModel?.visitors[7]?.name }}</span>
+                    <span class="card-name" [title]="roomModel?.visitors[7]?.name">{{ roomModel?.visitors[7]?.name }}</span>
                 </div>
                 <div class="card card-4" *ngIf="roomModel?.visitors?.length > 3">
                     <div class="card-body" [class.selected]="roomModel?.visitors[3]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[3]?.estimate }}</span>
                     </div>
-                    <span class="card-name">{{ roomModel?.visitors[3]?.name }}</span>
+                    <span class="card-name" [title]="roomModel?.visitors[3]?.name">{{ roomModel?.visitors[3]?.name }}</span>
                 </div>
                 <div class="card card-6" *ngIf="roomModel?.visitors?.length > 5">
                     <div class="card-body" [class.selected]="roomModel?.visitors[5]?.estimate">
                         <span *ngIf="averageEstimate">{{ roomModel?.visitors[5]?.estimate }}</span>
                     </div>
-                    <span class="card-name">{{ roomModel?.visitors[5]?.name }}</span>
+                    <span class="card-name" [title]="roomModel?.visitors[5]?.name">{{ roomModel?.visitors[5]?.name }}</span>
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
             <div class="card-body" [class.selected]="roomModel?.visitors[0]?.estimate">
                 <span *ngIf="averageEstimate">{{ roomModel?.visitors[0]?.estimate }}</span>
             </div>
-            <span class="card-name">{{ roomModel?.visitors[0]?.name }}</span>
+            <span class="card-name" [title]="roomModel?.visitors[0]?.name">{{ roomModel?.visitors[0]?.name }}</span>
         </div>
     </div>
     <div class="footer">

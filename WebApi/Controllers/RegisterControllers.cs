@@ -39,7 +39,7 @@ namespace ServerSite.Controllers
                     Password = orderDto.password,
                 };
 
-                if (orderDto.UserId != string.Empty) {
+                if (orderDto.UserId != null) {
                     user.Id = Guid.Parse(orderDto.UserId);
                 }
 
@@ -62,7 +62,7 @@ namespace ServerSite.Controllers
                 {
                     var userz = _repository.User.GetUser(userDto.Mail, true);
                     var token = await _authManager.CreateToken(userz.Id,userDto.Mail);
-                    return Ok(token);
+                    return new {token, user.Id};
                 }
                
 
