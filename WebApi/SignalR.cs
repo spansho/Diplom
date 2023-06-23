@@ -149,7 +149,6 @@ namespace ServerSite
                 _repository.Save();
 
                 var issues = _repository.Issue.GetAllIssues(roomId);
-                Console.WriteLine("eblan");
                 await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
             }
             catch(Exception e)
