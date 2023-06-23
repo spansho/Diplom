@@ -11,10 +11,12 @@ export class HomeComponent implements OnInit {
   public roomId = "";
   public login = "";
   public password = "";
+  public userIssue: any;
 
   public isLoginPopupOpen = false;
   public isRegisterPopupOpen = false;
   public isUserIssuePopupOpen = false;
+  public isUserSelectedIssuePopupOpen = false;
 
   constructor(
     private readonly apiClient: ApiClient
@@ -66,7 +68,7 @@ export class HomeComponent implements OnInit {
   }
 
   public async userIssuePopupOpen(): Promise<void> {
-    // await this.getUserIssuesList();
+    await this.getUserIssuesList();
     this.isUserIssuePopupOpen = true;
   }
 

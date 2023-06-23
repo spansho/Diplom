@@ -1,3 +1,7 @@
+tr {
+    cursor: pointer;
+}
+
 .bg-s-red {
     background-color: #E98074;
 }

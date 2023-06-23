@@ -1,3 +1,7 @@
+tr {
+    cursor: pointer;
+}
+
 .home-page {
     margin: 0 40px;
 }

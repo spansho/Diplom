@@ -23,6 +23,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   public isRegisterPopupOpen = false;
   public isUserIssuePopupOpen = false;
   public isSelectedIssuePopupOpen = false;
+  public isUserSelectedIssuePopupOpen = false;
   public readonly estimates = ["0", "0,5", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
 
   private readonly unsubscribe$ = new Subject<void>();
@@ -38,6 +39,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   public selectedEstimate = "";
   public issuesList: any;
   public userIssuesList: any;
+  public userIssue: any;
   public selectedIssue: any; // то каторое открываеться в попапе
   public votingNowIssue = null; // то каторое оцениваеться сейчас
 
@@ -63,14 +65,7 @@ export class RoomComponent implements OnInit, OnDestroy {
        await this.signalRService.startConnection();
     }
 
-    if (localStorage.getItem("roomId") === this.roomId) {
-      this.roomName = localStorage.getItem("roomName");
-      this.closeNamePopUp();
-    } else {
-      this.openNamePopUp();
-      localStorage.removeItem("roomId");
-      localStorage.setItem("roomId", this.roomId);
-    }
+    this.openNamePopUp();
 
     this.signalRService.enterRoom$
       .pipe(takeUntil(this.unsubscribe$))
@@ -126,6 +121,14 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.issuesList = message;
     });
 
+    this.signalRService.votingIssue$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(message => {
+        console.log("votingIssue$");
+        console.log(message);
+        this.changeVotingThisIssues(message);
+    });
+
     // не адекватный костыль на предзащиту, на защите не прокатит.
     // Почему сразу не прокатит?
     window.onfocus = () => {
@@ -135,6 +138,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     window.onbeforeunload = async () => {
       console.log("ngOnDestroy");
+      localStorage.removeItem("roomModelUserId");
       await this.signalRService.disconeconectRoom(this.roomId, this.roomName, this.roomModel.userId);
     };
   }
@@ -148,7 +152,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   public openInvitePlayersPopUp(): void {
-    localStorage.removeItem('auth_token');
     this.isInvitePlayersPopUpOpen = true;
   }
 
@@ -263,6 +266,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
   
     localStorage.setItem('auth_token', result.token);
+    localStorage.setItem('auth_userId', result.id);
     alert("Registration was successful");
     this.isLoginPopupOpen = false;
     await this.userIssuePopupOpen();
@@ -289,6 +293,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   
   public logoutClick(): void {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_userId');
     this.isUserIssuePopupOpen = false;
   }
 

@@ -142,8 +142,6 @@ namespace ServerSite
         {
             try
             {
-
-
                 var issue = new Issue { Name = name, Description = string.Empty, Priority = "PP-2", RoomId = roomId, Link = string.Empty, IssueId = Guid.NewGuid().ToString(), Estimation = 0, CreatingTime = DateTime.Now };
                 _repository.Issue.CreateIssue(issue);
                 _repository.Save();
@@ -188,6 +186,19 @@ namespace ServerSite
 
                 var issues = _repository.Issue.GetAllIssues(roomId);
                 await Clients.Group(roomId).SendAsync("IssuesListChanged", issues);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public async Task VotingIssue(string roomId, string issueId)
+        {
+            try
+            {
+                var issue = _repository.Issue.GetIssueById(issueId);
+                await Clients.Group(roomId).SendAsync("VotingIssue", issue);
             }
             catch (Exception e)
             {

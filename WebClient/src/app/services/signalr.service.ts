@@ -15,11 +15,12 @@ export class SignalRService {
   public readonly startNewVoting$ = new Subject<any>();
   public readonly revealCards$ = new Subject<void>();
   public readonly createNewIssues$ = new Subject<any>();
+  public readonly votingIssue$ = new Subject<any>();
 
   public hubConnection: signalR.HubConnection;
   public async startConnection(): Promise<void> {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5000/voting')
+      .withUrl('http://147.78.65.214:5000/voting')
       .build();
     this.hubConnection.serverTimeoutInMilliseconds = 100000000;
     await this.hubConnection
@@ -52,6 +53,11 @@ export class SignalRService {
     this.hubConnection.on("IssuesListChanged", (message) => {
       console.log(message);
       this.createNewIssues$.next(message);
+    });
+
+    this.hubConnection.on("VotingIssue", (message) => {
+      console.log(message);
+      this.votingIssue$.next(message);
     });
   };
 
@@ -138,6 +144,17 @@ export class SignalRService {
     await this.hubConnection.invoke("DeleteIssue", roomId, issueId)
       .then((data: any) => {
         console.log("DeleteIssue");
+        console.log(data);
+      })
+      .catch(function (err) {
+          return console.error(err.toString());
+      });
+  };
+
+  public async votingIssue(roomId: string, issueId: string) {
+    await this.hubConnection.invoke("VotingIssue", roomId, issueId)
+      .then((data: any) => {
+        console.log("VotingIssue");
         console.log(data);
       })
       .catch(function (err) {
