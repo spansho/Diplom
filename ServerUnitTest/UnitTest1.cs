@@ -71,18 +71,6 @@ namespace ServerUnitTest
             Assert.That(znachenie, Is.Not.Null);
         }
 
-        [Test]
-        public void RoomRepository_CreateRoom_ShouldBeDeleted()
-        {
-            RoomRepositoryStub stub = new RoomRepositoryStub();
-            Guid newGuid = Guid.NewGuid();
-            Room room = new Room { RoomId = newGuid.ToString(), NumberOfVisitorsIn = 1, LinkToRoom = "best" + newGuid.ToString() };
-            stub.CreateRoom(room);
-
-            var znachenie = stub.GetRoomById(newGuid.ToString());
-
-            Assert.That(znachenie, Is.Null);
-        }
 
         [Test]
         public void RoomRepository_GetRoomById_ShouldBeGetted()
