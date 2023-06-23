@@ -33,38 +33,54 @@ namespace ServerSite.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateRoom()
         {
-            Guid guid = Guid.NewGuid();
-            string roomLink = "https://uberDuupperSait/room/"+ guid;
-            Room room = new Room
+            try
             {
-                NumberOfVisitorsIn = 0,
-                RoomId = guid.ToString(),
-                LinkToRoom = roomLink
-            };
+                Guid guid = Guid.NewGuid();
+                string roomLink = "https://uberDuupperSait/room/" + guid;
+                Room room = new Room
+                {
+                    NumberOfVisitorsIn = 0,
+                    RoomId = guid.ToString(),
+                    LinkToRoom = roomLink
+                };
 
-            _repository.Room.CreateRoom(room);
-            _repository.Save();
+                _repository.Room.CreateRoom(room);
+                _repository.Save();
 
-            //return Redirect();
-            List<User> users = new List<User>();    
+                //return Redirect();
+                List<User> users = new List<User>();
+                return Ok(new { Link = roomLink, Id = guid, Users = users });
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
 
-            return Ok(new {Link= roomLink ,Id=guid,Users=users});
+            return BadRequest();
+            
         }
 
-        
-        [HttpPost("get"),Authorize]
-        public async Task<IActionResult> GetIssues([FromBody]UserDto user)
+
+        [HttpPost("get"), Authorize]
+        public async Task<IActionResult> GetIssues([FromBody] UserDto user)
         {
-            var userz = _repository.User.GetUser(Email,true);
-            var userVotedIssues= _repository.authorizedUserIssue.GetAllUserIssue(userz.Id.ToString());
+            try
+            { 
+            var userz = _repository.User.GetUser(Email, true);
+            var userVotedIssues = _repository.authorizedUserIssue.GetAllUserIssue(userz.Id.ToString());
             List<Issue> issues = new List<Issue>();
-            foreach(var votedIssue in userVotedIssues)
+            foreach (var votedIssue in userVotedIssues)
             {
                 Issue issue = _repository.Issue.GetIssueById(votedIssue.IssueId);
                 issues.Add(issue);
             }
 
             return Ok(issues);
+            }
+             catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+
+             return BadRequest();
         }
 
     }

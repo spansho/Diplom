@@ -96,6 +96,7 @@ namespace WebApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapHub<VotingHub>("/voting");
             });
         }

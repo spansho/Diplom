@@ -29,25 +29,32 @@ namespace ServerSite.Controllers
         [HttpPost("register")]
         public IActionResult CreateUser([FromBody] UserDto orderDto)
         {
-            var useros = _repository.User.GetUser(orderDto.Mail, true);
-            if (useros == null)
+            try
             {
-                User user = new User
+                var useros = _repository.User.GetUser(orderDto.Mail, true);
+                if (useros == null)
                 {
-                    Id = Guid.NewGuid(),
-                    Mail = orderDto.Mail,
-                    Password = orderDto.password,
-                };
+                    User user = new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Mail = orderDto.Mail,
+                        Password = orderDto.password,
+                    };
 
-                if (orderDto.UserId != null) {
-                    user.Id = Guid.Parse(orderDto.UserId);
+                    if (orderDto.UserId != null)
+                    {
+                        user.Id = Guid.Parse(orderDto.UserId);
+                    }
+
+                    _repository.User.CreateUser(user);
+                    _repository.Save();
+                    return Ok();
                 }
-
-                _repository.User.CreateUser(user);
-                _repository.Save();
-                return Ok();
             }
-
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return BadRequest();
 
         }
@@ -55,19 +62,25 @@ namespace ServerSite.Controllers
         [HttpPost("entrance")]
         public async Task<object> EntranceUser([FromBody] UserDto userDto)
         {
-            var user = _repository.User.GetUser(userDto.Mail, true);
-            if (user != null)
+            try
             {
-                if( user.Password==userDto.password)
+                var user = _repository.User.GetUser(userDto.Mail, true);
+                if (user != null)
                 {
-                    var userz = _repository.User.GetUser(userDto.Mail, true);
-                    var token = await _authManager.CreateToken(userz.Id,userDto.Mail);
-                    return new {token, user.Id};
+                    if (user.Password == userDto.password)
+                    {
+                        var userz = _repository.User.GetUser(userDto.Mail, true);
+                        var token = await _authManager.CreateToken(userz.Id, userDto.Mail);
+                        return new { token, user.Id };
+                    }
+
+
                 }
-               
-
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return BadRequest();
         }
     }

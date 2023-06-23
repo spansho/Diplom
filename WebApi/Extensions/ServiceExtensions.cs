@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository;
@@ -44,11 +45,7 @@ namespace WebApi.Extensions
                     Title = "Code Maze API",
                     Version = "v1"
                 });
-                s.SwaggerDoc("v2", new OpenApiInfo
-                {
-                    Title = "Code Maze API",
-                    Version = "v2"
-                });
+                s.AddSignalRSwaggerGen();
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
